@@ -1,1 +1,0 @@
-Je vais commencer la mise en place de la base de données MySQL sous peu, je dois d'abord réviser mes notions.
