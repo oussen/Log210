@@ -18,6 +18,7 @@ class CreateUsersTable extends Migration
 			$table->string('firstNameUSERS', 50);
 			$table->string('codeUSERS', 7);
 			$table->boolean('isManagerUSERS');
+			$table->rememberToken();
         });
 		
 		Schema::create('Book', function (Blueprint $table){
