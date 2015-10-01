@@ -12,12 +12,12 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('User', function (Blueprint $table) {
-            $table->increments('idUSER');
-            $table->string('lastNameUSER', 50);
-			$table->string('firstNameUSER', 50);
-			$table->string('codeUSER', 7);
-			$table->boolean('isManagerUSER');
+        Schema::create('Users', function (Blueprint $table) {
+            $table->increments('idUSERS');
+            $table->string('lastNameUSERS', 50);
+			$table->string('firstNameUSERS', 50);
+			$table->string('codeUSERS', 7);
+			$table->boolean('isManagerUSERS');
         });
 		
 		Schema::create('Book', function (Blueprint $table){
@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
 		});
 		
 		Schema::create('User_Book', function (Blueprint $table){
-			$table->integer('idUSER');
+			$table->integer('idUSERS');
 			$table->integer('idBOOK');
 		});
     }
