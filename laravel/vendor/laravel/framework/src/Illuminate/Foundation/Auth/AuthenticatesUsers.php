@@ -32,6 +32,16 @@ trait AuthenticatesUsers
      */
     public function postLogin(Request $request)
     {
+        /*if(!empty($request->input('email'))){
+            $this->validate($request, [
+                'email' => 'required', 'password' => 'required',
+            ]);
+        } elseif (!empty($request->input('phone'))){
+            $this->validate($request, [
+               'phone' => 'required', 'password' => 'required',
+            ]);
+        }*/
+
         $this->validate($request, [
             $this->loginUsername() => 'required', 'password' => 'required',
         ]);
@@ -47,9 +57,16 @@ trait AuthenticatesUsers
 
         $credentials = $this->getCredentials($request);
 
-        if (Auth::attempt($credentials, $request->has('remember'))) {
+        $field = filter_var($request->input('login'), FILTER_VALIDATE_EMAIL) ? 'email' : 'phone';
+        $request->merge([$field => $request->input('login')]);
+
+        if (Auth::attempt($request->only($field, 'password'), $request->has('remember'))){
             return $this->handleUserWasAuthenticated($request, $throttles);
         }
+
+        #if (Auth::attempt($credentials, $request->has('remember'))) {
+        #    return $this->handleUserWasAuthenticated($request, $throttles);
+        #}
 
         // If the login attempt was unsuccessful we will increment the number of attempts
         // to login and redirect the user back to the login form. Of course, when this
@@ -137,7 +154,7 @@ trait AuthenticatesUsers
      */
     public function loginUsername()
     {
-        return property_exists($this, 'username') ? $this->username : 'email';
+        return property_exists($this, 'username') ? $this->username : 'login';
     }
 
     /**

@@ -7,6 +7,7 @@ use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
+use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
@@ -46,6 +47,7 @@ class AuthController extends Controller
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
 			'isManager' => 'boolean',
+            'phone' => 'required|max:20',
         ]);
     }
 
@@ -63,12 +65,14 @@ class AuthController extends Controller
 				'email' => $data['email'],
 				'password' => bcrypt($data['password']),
 				'isManager' => $data['isManager'],
+                'phone' => $data['phone'],
 			]);
 		} else {
 			return User::create([
 				'name' => $data['name'],
 				'email' => $data['email'],
 				'password' => bcrypt($data['password']),
+                'phone' => $data['phone'],
 			]);
 		}
     }
