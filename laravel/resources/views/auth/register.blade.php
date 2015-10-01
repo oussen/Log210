@@ -20,10 +20,16 @@
 
     <div>
         Confirm Password
-        <input type="password" name="password_confirmation">
+        <input type="password" name="password_confirmation"> 
     </div>
+	
+	<div>
+		<br>
+		<input type="checkbox" name="isManager" value="1"> Manager
+	</div>
 
     <div>
+		<br>
         <button type="submit">Register</button>
     </div>
 </form>

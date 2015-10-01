@@ -45,6 +45,7 @@ class AuthController extends Controller
             'name' => 'required|max:255',
             'email' => 'required|email|max:255|unique:users',
             'password' => 'required|confirmed|min:6',
+			'isManager' => 'boolean',
         ]);
     }
 
@@ -56,10 +57,19 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+		if(!empty($data['isManager'])){
+			return User::create([
+				'name' => $data['name'],
+				'email' => $data['email'],
+				'password' => bcrypt($data['password']),
+				'isManager' => $data['isManager'],
+			]);
+		} else {
+			return User::create([
+				'name' => $data['name'],
+				'email' => $data['email'],
+				'password' => bcrypt($data['password']),
+			]);
+		}
     }
 }
