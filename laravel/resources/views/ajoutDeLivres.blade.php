@@ -1,7 +1,7 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: victor
- * Date: 10/17/15
- * Time: 7:39 PM
- */
+@extends('layouts.master')
+
+@section('title', 'Ajout de Livres')
+
+@section('content')
+    <p>This is where the html goes</p>
+@endsection

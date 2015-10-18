@@ -11,12 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('home', function(){
+	return view('welcome');
 });
 
-Route::get('home', function(){
-	echo 'Welcome home.';
+Route::get('ajoutDeLivres', function(){
+    return view('ajoutDeLivres');
 });
 
 // Authentication routes...

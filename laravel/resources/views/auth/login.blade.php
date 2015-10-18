@@ -1,8 +1,6 @@
 <!-- resources/views/auth/login.blade.php -->
 <head>
-    <!--
-        SCRIPTS
-    -->
+    <!-- SCRIPTS -->
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
     <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
@@ -46,6 +44,9 @@
             <button class="form-control" type="submit">Login</button>
             <input type="hidden" id="hiddenEmail" name="email" value="" />
             <input type="hidden" id="hiddenPhone" name="phone" value="" />
+        </div>
+        <div>
+            Don't have an account? <a href="/auth/register">Register</a>
         </div>
     </form>
 </div>
