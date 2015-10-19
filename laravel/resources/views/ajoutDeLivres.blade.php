@@ -3,5 +3,7 @@
 @section('title', 'Ajout de Livres')
 
 @section('content')
-    <p>This is where the html goes</p>
+    <div id="rechercheISBN">
+		<input class="typeahead" type="text" placeholder="Code ISBN">
+	</div>
 @endsection
