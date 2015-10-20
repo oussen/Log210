@@ -1,0 +1,16 @@
+body{
+    background-color: #C2C2C2;
+    color: #333333;
+}
+
+nav{
+    background-color: #333333 !important;
+    color: #C2C2C2 !important;
+    border-radius: 0px !important;
+    border: none !important;
+}
+
+#well{
+    background-color: #333333;
+    color: #C2C2C2;
+}
