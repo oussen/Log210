@@ -1,12 +1,11 @@
 <!-- resources/views/auth/register.blade.php -->
-<head>
-    <!-- SCRIPTS -->
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
-</head>
-<body>
-    <div class="container col-md-3 col-md-offset-4">
+@extends('layouts.master')
+
+@section('title', 'Enregistrement')
+
+@section('content')
+    <h1 class="col-xs-offset-1"> Register </h1>
+    <div class="container col-xs-4 col-md-offset-4">
         <form method="POST" action="/auth/register">
             {!! csrf_field() !!}
 
@@ -50,4 +49,4 @@
             </div>
         </form>
     </div>
-</body>
+@endsection
