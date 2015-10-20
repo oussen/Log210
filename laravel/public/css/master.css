@@ -10,7 +10,35 @@ nav{
     border: none !important;
 }
 
-#well{
+.well{
     background-color: #333333;
     color: #C2C2C2;
+}
+
+.navbar-nav > li > .dropdown-menu {
+    background-color: #333333 !important;
+    color: #C2C2C2 !important;
+}
+
+.nav > li > a:hover{
+    background-color: tomato !important;
+    color: #333333 !important;
+}
+
+.nav > li.dropdown.active.open > ul.dropdown-menu a:hover,
+.nav > li.dropdown.open > a,
+.nav > li.dropdown.open > ul.dropdown-menu a:hover
+{
+    background-color: tomato !important;
+    color: #333333 !important;
+}
+
+.dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
+    background-color: tomato !important;
+    color: #333333 !important;
+    background-image:none !important;
+}
+
+.dropdown-menu > li > a{
+    color: #C2C2C2 !important;
 }
