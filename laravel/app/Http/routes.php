@@ -15,9 +15,7 @@ Route::get('home', function(){
 	return view('welcome');
 });
 
-Route::get('ajoutDeLivres', function(){
-    return view('ajoutDeLivres');
-});
+Route::get('ajoutDeLivres', 'Controller@getBooks');
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');

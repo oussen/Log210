@@ -6,4 +6,7 @@
     <div id="rechercheISBN">
 		<input class="typeahead" type="text" placeholder="Code ISBN">
 	</div>
+	
+	{!! Html::script('js/books.js', array('books' => 'books')) !!}
+	
 @endsection
