@@ -8,9 +8,9 @@
 @endsection
 
 @section('content')
-    <h1 class="col-xs-offset-1"> Register </h1>
-    <div class="container col-xs-4 col-md-offset-4">
-        <form method="POST" action="/auth/register">
+    <div class="container col-md-4 col-md-offset-4">
+        <h1 id="authTitle"> ÒREGISTERÓ </h1>
+        <form method="POST" action="/auth/register" style="padding-top: 10%">
             {!! csrf_field() !!}
 
             <div>
@@ -18,22 +18,22 @@
                 <input class="form-control" type="text" name="name" value="{{ old('name') }}">
             </div>
 
-            <div>
+            <div id="authDiv">
                 Email
                 <input class="form-control" type="email" name="email" value="{{ old('email') }}">
             </div>
 
-            <div>
+            <div id="authDiv">
                 Phone
                 <input class="form-control" type="text" name="phone" value="{{ old('phone') }}">
             </div>
 
-            <div>
+            <div id="authDiv">
                 Password
                 <input class="form-control" type="password" name="password">
             </div>
 
-            <div>
+            <div id="authDiv">
                 Confirm Password
                 <input class="form-control" type="password" name="password_confirmation">
             </div>

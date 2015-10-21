@@ -1,9 +1,12 @@
 <html>
 <head>
+    <meta charset="utf-8" />
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+
     <title>Biblio - @yield('title')</title>
     <!-- SCRIPTS -->
-    @yield('scripts')
     {!! Html::script('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js') !!}
+    @yield('scripts')
     {!! Html::script('//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js') !!}
     {!! Html::script('js/books.js') !!}
     {!! Html::script('js/typeahead.js') !!}
@@ -24,22 +27,22 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="home"><span class="glyphicon glyphicon glyphicon-home"></span></a>
+                    <a class="navbar-brand" href="{!! URL::route('home') !!}"><span class="glyphicon glyphicon glyphicon-home"></span></a>
                 </div>
 
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li id="menuHome"><a href="home">Acceuil <span class="sr-only">(current)</span></a></li>
                         <li id="menuBooks" class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Livres <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li id="menuBooksAdd"><a href="ajoutDeLivres">Ajouter un livre</a></li>
+                                <li id="menuBooksAdd"><a href="{!! URL::route('ajoutDeLivres') !!}">Ajouter un livre</a></li>
                                 <li><a href="#">Chercher un livre</a></li>
                                 <li><a href="#">Liste des livres</a></li>
                             </ul>
                         </li>
                     </ul>
+
                     @yield('showName')
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->

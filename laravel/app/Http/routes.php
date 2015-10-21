@@ -11,16 +11,23 @@
 |
 */
 
-Route::group(['middleware' => 'auth'], function(){
-	Route::get('home', function(){
-			return view('welcome', ['user' => Auth::user()->name]);
-	});
+Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'Controller@checkLogin']);
 
-	Route::get('ajoutDeLivres', 'Controller@getBooks');
-});
+Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@store']);
+Route::post('upcSearch', ['as' => 'upcSearch', 'uses' => 'Controller@getUpcBooks']);
+Route::post('isbnSearch', ['as' => 'isbnSearch', 'uses' => 'Controller@getIsbnBooks']);
+Route::post('eanSearch', ['as' => 'eanSearch', 'uses' => 'Controller@getEanBooks']);
+
+Route::get('home', ['as' => 'home', function(){
+	if (Auth::guest()){
+		return Redirect::route('auth/login');
+	} else {
+		return view('welcome', ['user' => Auth::user()->name]);
+	}
+}]);
 
 // Authentication routes...
-Route::get('auth/login', 'Auth\AuthController@getLogin');
+Route::get('auth/login', ['as' => 'auth/login', 'uses' => 'Auth\AuthController@getLogin']);
 Route::post('auth/login', 'Auth\AuthController@postLogin');
 Route::get('auth/logout', 'Auth\AuthController@getLogout');
 
