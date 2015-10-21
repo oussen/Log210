@@ -55,6 +55,7 @@
 				echo '<table class="table">';
 				echo '<thead>';
 				echo '<tr>';
+				echo '<th>ISBN</th>';
 				echo '<th>Titre</th>';
 				echo '<th>Auteur</th>';
 				echo '<th>Nombre de pages</th>';
@@ -62,7 +63,8 @@
 				echo '</tr>';
 				echo '</thead>';
 				echo '<tbody>';
-				echo '<tr class="odd">';
+				echo '<tr>';
+				echo '<td id="isbn">' . $_GET['ISBN'] . '</td>';
 				echo '<td id="title" contenteditable="true">' . $titre . '</td>';
 				echo '<td id="authors" contenteditable="true">' . $auteurs . '</td>';
 				echo '<td id="pageCount" contenteditable="true">' . $pageCount . '</td>';
@@ -70,8 +72,9 @@
 				echo '</tr>';
 				echo '</tbody>';
 				echo '</table>';
-				
-				echo '<button type="button">Enregistrer</button>';
+
+				echo '<input type="hidden" id="sqlQuery" name="query">';
+				echo '<button id="modifLivre">Enregistrer</button>';
 			}
 			else
 			{
@@ -79,6 +82,7 @@
 			}
 		}
 	}
+	
 	?>
 	
 @endsection

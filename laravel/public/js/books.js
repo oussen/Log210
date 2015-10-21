@@ -3,30 +3,19 @@
  */
 $(document).ready(function() {
 	$("button").click(function(){
-		var ISBN = document.getElementById("ISBN").innerHTML();
-		$("td[contenteditable=true]").each(function(){
-			if($(this).attr("id") == "title")
-			{
-				var titre = $(this).text();
-			}
-			else if($(this).attr("id") == "authors")
-			{
-				var auteurs = $(this).text();
-			}
-			else if($(this).attr("id") == "pageCount")
-			{
-				var pageCount = $(this).text();
-			}
-			else if($(this).attr("id") == "price")
-			{
-				var prix = $(this).text();
-			}
-		});
+	
+		var titre = document.getElementById('title').innerHTML;
+		var isbn =  document.getElementById('isbn').innerHTML;
+		var auteurs = document.getElementById('authors').innerHTML;
+		var pageCount = document.getElementById('pageCount').innerHTML;
+		var prix = document.getElementById('price').innerHTML;
 		
-		var query = "INSERT INTO livres VALUES (" + ISBN + ", " + titre + ", " + auteurs + ", " + pageCount + ", " + prix + ");"
+		var query = "INSERT INTO livres VALUES (" + isbn + ", " + titre + ", " + auteurs + ", " + pageCount + ", " + prix + ");"
 		console.log(query);
 		
-		document.getElementsByName("sqlQuery").innerHTML = query;
+		window.location.href = "ajoutDeLivres?query=" + query;
+		
+		document.getElementById("sqlQuery").innerHTML = query;
 	});
 });
 
