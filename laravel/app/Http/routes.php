@@ -11,11 +11,13 @@
 |
 */
 
-Route::get('home', function(){
-	return view('welcome');
-});
+Route::group(['middleware' => 'auth'], function(){
+	Route::get('home', function(){
+			return view('welcome', ['user' => Auth::user()->name]);
+	});
 
-Route::get('ajoutDeLivres', 'Controller@getBooks');
+	Route::get('ajoutDeLivres', 'Controller@getBooks');
+});
 
 // Authentication routes...
 Route::get('auth/login', 'Auth\AuthController@getLogin');

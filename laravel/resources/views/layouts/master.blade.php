@@ -40,6 +40,7 @@
                             </ul>
                         </li>
                     </ul>
+                    @yield('showName')
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>

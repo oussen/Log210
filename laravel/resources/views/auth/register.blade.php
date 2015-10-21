@@ -3,6 +3,10 @@
 
 @section('title', 'Enregistrement')
 
+@section('showName')
+    <p class="navbar-text navbar-right">Not logged in</p>
+@endsection
+
 @section('content')
     <h1 class="col-xs-offset-1"> Register </h1>
     <div class="container col-xs-4 col-md-offset-4">

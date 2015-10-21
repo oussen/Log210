@@ -7,7 +7,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use View;
-
+use Auth;
 use DB;
 
 class Controller extends BaseController
@@ -17,7 +17,11 @@ class Controller extends BaseController
 	public function getBooks()
 	{
 		$books = DB::table('livres')->get();
-		
-		return View::make('ajoutDeLivres')->with('books', $books);
+
+		if (Auth::guest()){
+			return redirect('auth/login');
+		} else {
+			return View::make('ajoutDeLivres')->with(['books' => $books, 'user' => Auth::user()->name]);
+		}
 	}
 }
