@@ -5,12 +5,10 @@
 @section('content')
     <div id="rechercheISBN">
 		<form action="ajoutDeLivres" method="GET">
-		<input class="txtLivres" type="text" id="ISBN" placeholder="Code ISBN">
+		<input class="txtLivres" type="text" name="ISBN" placeholder="Code ISBN">
 		<input type="submit">
 		</form>
 	</div>
-	
-	<input type="hidden" name="sqlQuery">
 	
 	<?php
 	
