@@ -10,6 +10,14 @@ nav{
     border: none !important;
 }
 
+tr th{
+	background-color: #ffffff;
+}
+
+tr td{
+	background-color: #ffffff;
+}
+
 .well{
     background-color: #333333;
     color: #C2C2C2;
