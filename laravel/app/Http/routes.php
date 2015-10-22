@@ -11,11 +11,6 @@
 |
 */
 
-
-Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'Controller@checkLogin']);
-Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@store']);
-Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'Controller@databaseGetBooks']);
-
 // Book search & DB routes...
 Route::post('upcSearch', ['as' => 'upcSearch', 'uses' => 'Controller@getUpcBooks']);
 Route::post('isbnSearch', ['as' => 'isbnSearch', 'uses' => 'Controller@getIsbnBooks']);
@@ -23,6 +18,9 @@ Route::post('eanSearch', ['as' => 'eanSearch', 'uses' => 'Controller@getEanBooks
 Route::post('submitCoop', ['as' => 'submitCoop', 'uses' => 'Controller@submitCoop']);
 Route::post('joinCoop', ['as' => 'joinCoop', 'uses' => 'Controller@joinCoop']);
 Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@insertBookIntoDB']);
+Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'Controller@checkLogin']);
+Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@store']);
+Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'Controller@databaseGetBooks']);
 
 // Accessor routes...
 Route::get('home', ['as' => 'home', function(){
@@ -40,11 +38,14 @@ Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', function(){
 	}
 }]);
 Route::get('coopManagement', ['as' => 'coopManagement', 'uses' => 'Controller@displayCoop']);
+Route::get('receptionLivres', ['as' => 'receptionLivres', function(){
+	return view('receptionLivres', ['user' => Auth::user()->name]);
+}]);
 
 // Authentication routes...
 Route::get('auth/login', ['as' => 'auth/login', 'uses' => 'Auth\AuthController@getLogin']);
 Route::post('auth/login', 'Auth\AuthController@postLogin');
-Route::get('auth/logout', 'Auth\AuthController@getLogout');
+Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController@getLogout']);
 
 // Registration routes...
 Route::get('auth/register', 'Auth\AuthController@getRegister');

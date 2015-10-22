@@ -150,4 +150,8 @@ class Controller extends BaseController
 		DB::table('users')->where('id', Auth::user()->id)->update(['idCOOP' => $data['coopSelected']]);
 		return Redirect::route('coopManagement');
 	}
+
+	public function receiveBooks(){
+
+	}
 }
