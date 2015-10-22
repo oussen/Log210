@@ -109,6 +109,53 @@
             </div>
             <button class="form-control col-md-offset-5" id="saveBtn" name="eanBtn">Enregistrer</button>
             <?php
+            } elseif (isset($dataDB)){ ?>
+            <div class="panel panel-default">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr><th><?php if(isset($dataDB->codeISBN)){
+											echo "ISBN"; 
+										} 
+										elseif(isset($dataDB->codeUPC)){
+											echo "UPC";
+										}
+										elseif(isset($dataDB->codeEAN))
+										{
+											echo "EAN";
+										}									
+								?>
+					</th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th></tr>
+                    </thead>
+                    <tbody>
+                    <tr><td id="isbn"><?php if(isset($dataDB->codeISBN)){
+											echo $dataDB->codeISBN; 
+										} 
+										elseif(isset($dataDB->codeUPC)){
+											echo $dataDB->codeUPC;
+										}
+										elseif(isset($dataDB->codeEAN))
+										{
+											echo $dataDB->codeEAN;
+										}									
+								?>
+						</td>
+                        <td id="bookTitle" contenteditable="true"><?php echo $dataDB->titre; ?></td>
+                        <td id="author" contenteditable="true"><?php echo $dataDB->auteur; ?></td>
+                        <td id="pageCount" contenteditable="true"><?php echo $dataDB->nombrePages; ?></td>
+                        <td id="price" contenteditable="true"><?php echo $dataDB->prix; ?></td>
+                        <td id="bookState" contenteditable="true" class="select">
+                            <select>
+                                <option value="new" <?php if($dataDB->condition == "new"){echo 'selected="true"';}?>>Comme Neuf</option>
+                                <option value="used" <?php if($dataDB->condition == "used"){echo 'selected="true"';}?>>Usé</option>
+                                <option value="old" <?php if($dataDB->condition == "old"){echo 'selected="true"';}?>>Très Usé</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <button class="form-control col-md-offset-5" id="saveBtn" name="eanBtn">Enregistrer</button>
+            <?php
             }
         ?>
     </div>

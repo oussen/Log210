@@ -3,8 +3,8 @@
  */
 $(document).ready(function() {
     $("button[id$='Search']").click(function(e){
-        form = document.getElementById('submitForm');
-        console.log(e.target.id);
+		
+		form = document.getElementById('submitForm');
         form.action = e.target.id;
     });
 
