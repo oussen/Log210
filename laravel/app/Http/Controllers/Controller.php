@@ -107,30 +107,34 @@ class Controller extends BaseController
 
 		$isbn = "";
 		$title = "";
-		$user_id = "";
+		$id = "";
 
-		if(isset($data['isbnText'])){
+		if(!empty($data['isbnText'])){
 			$isbn = $data['isbnText'];
 		}
-		if(isset($data['titreText'])){
+		if(!empty($data['titreText'])){
 			$title = $data['titreText'];
 		}
-		if(isset($data['studentName'])){
+		if(!empty($data['studentName'])){
 			$user_id = DB::table('users')->select('id')->where('name', $data['studentName'])->get();
+			$id = $user_id[0]->id;
 		}
 
-		$data = DB::table('livres')->where('codeISBN', $isbn)
-			                       ->orWhere('codeUPC', $isbn)
-								   ->orWhere('codeEAN', $isbn)
-								   ->orWhere('titre', $title)
-								   ->orWhere('idUSER', $user_id[0]->id)
-								   ->get();
+        $data = DB::table('livres')
+            ->join('users', 'livres.idUSER', '=', 'users.id')
+            ->select('livres.*', 'users.email')
+            ->where('livres.codeISBN', $isbn)
+            ->orWhere('livres.codeUPC', $isbn)
+            ->orWhere('livres.codeEAN', $isbn)
+            ->orWhere('livres.titre', $title)
+            ->orWhere('livres.idUSER', $id)
+            ->get();
 
-		if(!emptyArray($data)) {
+        print_r($data);
+        if(!empty($data)) {
 			return View::make('receptionLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data]);
 		}
 		else {
-			print_r($data);
 			return View::make('receptionLivres')->with(['user' => Auth::user()->name, 'dataDB' => ""]);
 		}
 	}
@@ -186,6 +190,9 @@ class Controller extends BaseController
 	}
 
 	public function receiveBooks(Request $request){
+        $data = $request->get("id");
 
+        DB::table('livres')->where('id', $data)->update(['recu' => "1"]);
+        return Redirect::route('receptionLivres');
 	}
 }

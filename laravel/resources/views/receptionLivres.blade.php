@@ -38,10 +38,10 @@
 
                                 }
                                 ?>
-                            </th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th></tr>
+                            </th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th><th>Selectionner</th></tr>
                         </thead>
                         <tbody>
-                        <?php //foreach($dataDB as $livre){?>
+                        <?php foreach($dataDB as $livre){ ?>
                         <tr><td id="isbn"><?php if(isset($livre->codeISBN)){
                                     echo $livre->codeISBN;
                                 }
@@ -65,16 +65,21 @@
                                     <option value="old" <?php if(isset($livre->condition)){if($livre->condition == "old"){echo 'selected="true"';}}?>>Très Usé</option>
                                 </select>
                             </td>
+                            <td id="selected"><input type="checkbox" id="chkSelect<?php echo $livre->id; ?>"></td>
                         </tr>
-                        <?php //}?>
+                        <a href='mailto:<?php if(isset($livre->email)){echo $livre->email;} ?>?subject=Votre livre a &eacutet&eacute envoy&eacute &body=send%20this%20mail' id='SendMail<?php if(isset($livre->id)){echo $livre->id;} ?>'></a>
+                        <?php } ?>
                         </tbody>
                     </table>
                 </div>
-                <button class="form-control col-md-offset-5" id="saveBtn" name="eanBtn">Enregistrer</button>
+                <button class="form-control col-md-offset-5" id="saveBtnRec" name="eanBtn">Enregistrer</button>
                 <?php
                 }
                 ?>
             </div>
         </div>
     </div>
+@endsection
+@section('scripts')
+    {!! Html::script('js/receptionLivre.js') !!}
 @endsection
