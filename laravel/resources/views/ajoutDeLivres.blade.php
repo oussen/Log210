@@ -117,7 +117,9 @@
 										elseif(isset($dataDB->codeEAN))
 										{
 											echo "EAN";
-										}									
+										} else {
+                                            echo "ISBN/UPC/EAN";
+                                        }
 								?>
 					</th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th></tr>
                     </thead>
@@ -131,18 +133,20 @@
 										elseif(isset($dataDB->codeEAN))
 										{
 											echo $dataDB->codeEAN;
-										}									
+										} else {
+
+                                        }
 								?>
 						</td>
-                        <td id="bookTitle" contenteditable="true"><?php echo $dataDB->titre; ?></td>
-                        <td id="author" contenteditable="true"><?php echo $dataDB->auteur; ?></td>
-                        <td id="pageCount" contenteditable="true"><?php echo $dataDB->nombrePages; ?></td>
-                        <td id="price" contenteditable="true"><?php echo $dataDB->prix; ?></td>
+                        <td id="bookTitle" contenteditable="true"><?php if(isset($dataDB->titre)){echo $dataDB->titre; }?></td>
+                        <td id="author" contenteditable="true"><?php if(isset($dataDB->auteur)){echo $dataDB->auteur; }?></td>
+                        <td id="pageCount" contenteditable="true"><?php if(isset($dataDB->nombrePages)){echo $dataDB->nombrePages; }?></td>
+                        <td id="price" contenteditable="true"><?php if(isset($dataDB->prix)){echo $dataDB->prix; }?></td>
                         <td id="bookState" contenteditable="true" class="select">
                             <select>
-                                <option value="new" <?php if($dataDB->condition == "new"){echo 'selected="true"';}?>>Comme Neuf</option>
-                                <option value="used" <?php if($dataDB->condition == "used"){echo 'selected="true"';}?>>Usé</option>
-                                <option value="old" <?php if($dataDB->condition == "old"){echo 'selected="true"';}?>>Très Usé</option>
+                                <option value="new" <?php if(isset($dataDB->condition)){if($dataDB->condition == "new"){echo 'selected="true"';}}?>>Comme Neuf</option>
+                                <option value="used" <?php if(isset($dataDB->condition)){if($dataDB->condition == "used"){echo 'selected="true"';}}?>>Usé</option>
+                                <option value="old" <?php if(isset($dataDB->condition)){if($dataDB->condition == "old"){echo 'selected="true"';}}?>>Très Usé</option>
                             </select>
                         </td>
                     </tr>

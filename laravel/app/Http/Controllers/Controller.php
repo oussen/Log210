@@ -88,27 +88,25 @@ class Controller extends BaseController
 		return json_decode($data, true);
 	}
 
-<<<<<<< Updated upstream
 	public function databaseGetBooks(Request $request){
 			$data = $request->get('isbnText');
 			$data = DB::table('livres')->where('codeISBN', $data)
 							   ->orWhere('codeUPC', $data)
 							   ->orWhere('codeEAN', $data)
 							   ->get();
-		
-		return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data[0]]);
+
+			if(!emptyArray($data))
+				return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data[0]]);
+			else
+				return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'dataDB' => ""]);
 	}
-	
-	
-	public function store(Request $request){
-=======
+
 	/**
 	 * Handles inserts into DB for all code types
 	 *
 	 * @param Request $request
 	 */
 	public function insertBookIntoDB(Request $request){
->>>>>>> Stashed changes
 		if($request->ajax()){
 			$data = $request->all();
 
