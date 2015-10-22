@@ -68,7 +68,17 @@ class Controller extends BaseController
 		return json_decode($data, true);
 	}
 
-
+	public function databaseGetBooks(Request $request){
+			$data = $request->get('isbnText');
+			$data = DB::table('livres')->where('codeISBN', $data)
+							   ->orWhere('codeUPC', $data)
+							   ->orWhere('codeEAN', $data)
+							   ->get();
+		
+		return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data[0]]);
+	}
+	
+	
 	public function store(Request $request){
 		if($request->ajax()){
 			$data = $request->all();
