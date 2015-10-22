@@ -23,6 +23,7 @@ $(document).ready(function() {
                     data: {id: id},
                     success: function (data) {
                         $('#SendMail' + id)[0].click();
+                        window.location.href = "receptionLivres";
                     }, error: function () {
                         alert("error!!!!!");
                     }

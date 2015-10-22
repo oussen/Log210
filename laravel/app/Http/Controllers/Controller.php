@@ -90,13 +90,14 @@ class Controller extends BaseController
 
 	public function databaseGetBooks(Request $request){
 			$data = $request->get('isbnText');
+
 			$data = DB::table('livres')->where('codeISBN', $data)
 							   ->orWhere('codeUPC', $data)
 							   ->orWhere('codeEAN', $data)
 							   ->get();
 
-			if(!emptyArray($data))
-				return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data[0]]);
+			if(!empty($data)){
+				return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data[0]]);}
 			else
 				return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'dataDB' => ""]);
 	}
@@ -117,7 +118,8 @@ class Controller extends BaseController
 		}
 		if(!empty($data['studentName'])){
 			$user_id = DB::table('users')->select('id')->where('name', $data['studentName'])->get();
-			$id = $user_id[0]->id;
+			if(!empty($user_id))
+				$id = $user_id[0]->id;
 		}
 
         $data = DB::table('livres')
@@ -128,9 +130,11 @@ class Controller extends BaseController
             ->orWhere('livres.codeEAN', $isbn)
             ->orWhere('livres.titre', $title)
             ->orWhere('livres.idUSER', $id)
+			->where('livres.recu', '<>', 1)
             ->get();
 
-        print_r($data);
+
+
         if(!empty($data)) {
 			return View::make('receptionLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data]);
 		}
@@ -151,15 +155,15 @@ class Controller extends BaseController
 			if($data['whatIs'] == "isbn"){
 				DB::table('livres')->insert(['codeISBN' => $data['isbn'], 'titre' => $data['title'],
 					'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-					'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id]);
+					'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0]);
 			} elseif($data['whatIs'] == "upc"){
 				DB::table('livres')->insert(['codeUPC' => $data['isbn'], 'titre' => $data['title'],
 					'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-					'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id]);
+					'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0]);
 			}elseif($data['whatIs'] == "ean"){
 				DB::table('livres')->insert(['codeEAN' => $data['isbn'], 'titre' => $data['title'],
 					'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-					'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id]);
+					'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0]);
 			}
 
 		}
@@ -179,6 +183,9 @@ class Controller extends BaseController
 		$data = $request->all();
 
 		DB::table('coop')->insert(['address' => $data['coopAddress'], 'name' => $data['coopName'], 'idMANAGER' => Auth::user()->id]);
+		$currentCoop = DB::table('coop')->select('id')->where('name', $data['coopName'])->get();
+		DB::table('users')->where('id', Auth::user()->id)->update(['idCOOP' => $currentCoop[0]->id]);
+
 		return Redirect::route('coopManagement');
 	}
 

@@ -63,6 +63,12 @@ nav{
     color: #333333 !important;
 }
 
+#saveBtnRec{
+    width: 200px !important;
+    background-color: #C2C2C2 !important;
+    color: #333333 !important;
+}
+
 .well{
     background-color: #333D5D;
     color: #C2C2C2;

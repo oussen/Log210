@@ -20,7 +20,6 @@ Route::post('submitCoop', ['as' => 'submitCoop', 'uses' => 'Controller@submitCoo
 Route::post('joinCoop', ['as' => 'joinCoop', 'uses' => 'Controller@joinCoop']);
 Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@insertBookIntoDB']);
 Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'Controller@checkLogin']);
-Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@store']);
 Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'Controller@databaseGetBooks']);
 Route::post('receiveBooks', ['as' => 'receiveBooks', 'uses' => 'Controller@receiveBooks']);
 

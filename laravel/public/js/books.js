@@ -40,6 +40,7 @@ $(document).ready(function() {
                     whatIs : whatIs },
             success: function(data){
                 alert("Success!");
+                window.location.href = "ajoutDeLivres";
             }, error:function(){
                 alert("error!!!!!");
             }

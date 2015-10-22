@@ -36,7 +36,7 @@
                         <tr><th>UPC</th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th></tr>
                         </thead>
                         <tbody>
-                        <tr><td id="isbn"><?php if(isset($jsonUPC['number'])){ echo $jsonUPC['number']; }?></td>
+                        <tr><td id="isbn" contenteditable="true"><?php if(isset($jsonUPC['number'])){ echo $jsonUPC['number']; }?></td>
                             <td id="bookTitle" contenteditable="true"><?php if(isset($jsonUPC['itemname'])) { echo $jsonUPC['itemname']; } ?></td>
                             <td id="author" contenteditable="true"></td>
                             <td id="pageCount" contenteditable="true"></td>
@@ -61,7 +61,7 @@
                     <tr><th>ISBN</th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th></tr>
                     </thead>
                     <tbody>
-                    <tr><td id="isbn"><?php if (isset($jsonISBN['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier'])) { echo $jsonISBN['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']; } ?></td>
+                    <tr><td id="isbn" contenteditable="true"><?php if (isset($jsonISBN['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier'])) { echo $jsonISBN['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']; } ?></td>
                         <td id="bookTitle" contenteditable="true"><?php if (isset($jsonISBN['items'][0]['volumeInfo']['title'])) { echo $jsonISBN['items'][0]['volumeInfo']['title']; } ?></td>
                         <td id="author" contenteditable="true"><?php if(isset($jsonISBN['items'][0]['volumeInfo']['authors'][0])){ echo $jsonISBN['items'][0]['volumeInfo']['authors'][0]; } ?></td>
                         <td id="pageCount" contenteditable="true"><?php if(isset($jsonISBN['items'][0]['volumeInfo']['pageCount'])){ echo $jsonISBN['items'][0]['volumeInfo']['pageCount']; } ?></td>
@@ -86,7 +86,7 @@
                     <tr><th>ISBN</th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th></tr>
                     </thead>
                     <tbody>
-                    <tr><td id="isbn"><?php if(isset($jsonEAN['gtin'])){ echo $jsonEAN['gtin']; } ?></td>
+                    <tr><td id="isbn" contenteditable="true"><?php if(isset($jsonEAN['gtin'])){ echo $jsonEAN['gtin']; } ?></td>
                         <td id="bookTitle" contenteditable="true"><?php if (isset($jsonEAN['name'])) { echo $jsonEAN['name']; } ?></td>
                         <td id="author" contenteditable="true"></td>
                         <td id="pageCount" contenteditable="true"></td>
@@ -124,7 +124,7 @@
 					</th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th></tr>
                     </thead>
                     <tbody>
-                    <tr><td id="isbn"><?php if(isset($dataDB->codeISBN)){
+                    <tr><td id="isbn" contenteditable="true"><?php if(isset($dataDB->codeISBN)){
 											echo $dataDB->codeISBN; 
 										} 
 										elseif(isset($dataDB->codeUPC)){
