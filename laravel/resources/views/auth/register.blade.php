@@ -3,10 +3,6 @@
 
 @section('title', 'Enregistrement')
 
-@section('showName')
-    <p class="navbar-text navbar-right">Not logged in</p>
-@endsection
-
 @section('content')
     <div class="container col-md-4 col-md-offset-4">
         <h1 id="authTitle"> ÒREGISTERÓ </h1>

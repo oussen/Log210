@@ -16,16 +16,14 @@ use DB;
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-	
-	public function checkLogin()
-	{
-		if (Auth::guest()){
-			return Redirect::route('auth/login');
-		} else {
-			return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name]);
-		}
-	}
 
+	/**
+	 * Sends a json request to a UPC database API
+	 * Returns with json string of all info available
+	 *
+	 * @param Request $request -> in this case UPC number
+	 * @return View 'ajoutDeLivres' with Username and json array of api result
+	 */
 	public function getUpcBooks(Request $request){
 
 		$isbn = $request->get('isbnText');
@@ -37,17 +35,33 @@ class Controller extends BaseController
 		return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'jsonUPC' => $json]);
 	}
 
+	/**
+	 * Sends a json request to an ISBN database API
+	 * Returns with json string of all info available
+	 *
+	 * @param Request $request -> in this case ISBN number
+	 * @return View 'ajoutDeLivres' with Username and json array of api result
+	 */
 	public function getIsbnBooks(Request $request){
 
 		$isbn = $request->get('isbnText');
 
-		$json = $this->getContentDataAttribute(file_get_contents("https://www.googleapis.com/books/v1/volumes?q=+isbn:" . $isbn . "&key=AIzaSyBbtI1mN-lvCzHQrCxVel47M9IF4I9udL0&fields=items/volumeInfo(title,authors,pageCount,industryIdentifiers),items/saleInfo/retailPrice/amount"));
-
-		//return $json;
+		$json = $this->getContentDataAttribute(file_get_contents("https://www.googleapis.com/books/v1/volumes?q=+isbn:".
+																	$isbn.
+																	"&key=AIzaSyBbtI1mN-lvCzHQrCxVel47M9IF4I9udL0&fiel".
+																	"ds=items/volumeInfo(title,authors,pageCount,indus".
+																	"tryIdentifiers),items/saleInfo/retailPrice/amount"));
 
 		return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'jsonISBN' => $json]);
 	}
 
+	/**
+	 * Sends a json request to an EAN database API
+	 * Returns with json string of all info available
+	 *
+	 * @param Request $request -> in this case EAN number
+	 * @return View 'ajoutDeLivres' with Username and json array of api result
+	 */
 	public function getEanBooks(Request $request){
 
 		$isbn = $request->get('isbnText');
@@ -64,10 +78,17 @@ class Controller extends BaseController
 		return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'jsonEAN' => $json]);
 	}
 
+	/**
+	 * Decodes the json string and returns as an array
+	 *
+	 * @param $data -> json string from API
+	 * @return array from json
+	 */
 	public function getContentDataAttribute($data){
 		return json_decode($data, true);
 	}
 
+<<<<<<< Updated upstream
 	public function databaseGetBooks(Request $request){
 			$data = $request->get('isbnText');
 			$data = DB::table('livres')->where('codeISBN', $data)
@@ -80,6 +101,14 @@ class Controller extends BaseController
 	
 	
 	public function store(Request $request){
+=======
+	/**
+	 * Handles inserts into DB for all code types
+	 *
+	 * @param Request $request
+	 */
+	public function insertBookIntoDB(Request $request){
+>>>>>>> Stashed changes
 		if($request->ajax()){
 			$data = $request->all();
 
@@ -98,5 +127,29 @@ class Controller extends BaseController
 			}
 
 		}
+	}
+
+	public function displayCoop(){
+		if (Auth::guest()){
+			return Redirect::route('auth/login');
+		} else {
+			$coop = DB::table('coop')->select('id', 'name')->get();
+			return view('coopManagement', ['user' => Auth::user()->name, 'coop' => $coop]);
+		}
+	}
+
+	public function submitCoop(Request $request){
+
+		$data = $request->all();
+
+		DB::table('coop')->insert(['address' => $data['coopAddress'], 'name' => $data['coopName'], 'idMANAGER' => Auth::user()->id]);
+		return Redirect::route('coopManagement');
+	}
+
+	public function joinCoop(Request $request){
+		$data = $request->all();
+
+		DB::table('users')->where('id', Auth::user()->id)->update(['idCOOP' => $data['coopSelected']]);
+		return Redirect::route('coopManagement');
 	}
 }

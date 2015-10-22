@@ -1,3 +1,5 @@
-/**
- * Created by vicag on 21/10/2015.
- */
+$(document).ready(function(){
+  $("select").on("change", function(){
+      $("#coopSelected").val($("select option:selected").val());
+  });
+});

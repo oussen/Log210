@@ -11,14 +11,22 @@
 |
 */
 
+<<<<<<< Updated upstream
 Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'Controller@checkLogin']);
 
 Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@store']);
 Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'Controller@databaseGetBooks']);
+=======
+// Book search & DB routes...
+>>>>>>> Stashed changes
 Route::post('upcSearch', ['as' => 'upcSearch', 'uses' => 'Controller@getUpcBooks']);
 Route::post('isbnSearch', ['as' => 'isbnSearch', 'uses' => 'Controller@getIsbnBooks']);
 Route::post('eanSearch', ['as' => 'eanSearch', 'uses' => 'Controller@getEanBooks']);
+Route::post('submitCoop', ['as' => 'submitCoop', 'uses' => 'Controller@submitCoop']);
+Route::post('joinCoop', ['as' => 'joinCoop', 'uses' => 'Controller@joinCoop']);
+Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@insertBookIntoDB']);
 
+// Accessor routes...
 Route::get('home', ['as' => 'home', function(){
 	if (Auth::guest()){
 		return Redirect::route('auth/login');
@@ -26,6 +34,14 @@ Route::get('home', ['as' => 'home', function(){
 		return view('welcome', ['user' => Auth::user()->name]);
 	}
 }]);
+Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', function(){
+	if (Auth::guest()){
+		return Redirect::route('auth/login');
+	} else {
+		return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name]);
+	}
+}]);
+Route::get('coopManagement', ['as' => 'coopManagement', 'uses' => 'Controller@displayCoop']);
 
 // Authentication routes...
 Route::get('auth/login', ['as' => 'auth/login', 'uses' => 'Auth\AuthController@getLogin']);

@@ -41,9 +41,13 @@
                                 <li><a href="#">Liste des livres</a></li>
                             </ul>
                         </li>
+                        <li><a href="{!! URL::route('coopManagement') !!}">Coop</a></li>
                     </ul>
-
-                    @yield('showName')
+                    @if(Auth::check())
+                        <p class="navbar-text navbar-right">Bienvenue {{$user}}</p>
+                    @else
+                        <p class="navbar-text navbar-right">Pas de login</p>
+                    @endif
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>

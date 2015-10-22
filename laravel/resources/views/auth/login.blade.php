@@ -7,10 +7,6 @@
     {!! Html::script('js/login.js') !!}
 @endsection
 
-@section('showName')
-    <p class="navbar-text navbar-right">Not logged in</p>
-@endsection
-
 @section('content')
     <div class="container col-md-4 col-md-offset-4">
         <h1 id="authTitle">ÒLOGINÓ</h1>

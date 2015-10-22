@@ -2,16 +2,11 @@
 
 @section('title', 'Ajout de Livres')
 
-@section('showName')
-    <p class="navbar-text navbar-right">Bienvenue {{$user}}</p>
-@endsection
-
 @section('content')
     <div class="container-fluid">
-        <div class="form-group col-md-6">
-            <h1 id="title">Ajout de livre</h1>
-
-            <form method="post" action="{{ route('upcSearch') }}" accept-charset="UTF-8" id="submitForm">
+        <h1 id="authTitle">ÒAJOUT'DE'LIVREÓ</h1>
+        <div class="form-group">
+            <form class="col-md-offset-3 col-md-6" style="padding-top: 3%; padding-bottom: 1%" method="post" action="{{ route('upcSearch') }}" accept-charset="UTF-8" id="submitForm">
                 <div class="input-group">
                     <input class="form-control" type="text" id="isbnText" name="isbnText" placeholder="ISBN...">
                     <span class="input-group-btn">
