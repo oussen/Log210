@@ -101,6 +101,40 @@ class Controller extends BaseController
 				return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'dataDB' => ""]);
 	}
 
+	public function rechercherLivre(Request $request)
+	{
+		$data = $request->all();
+
+		$isbn = "";
+		$title = "";
+		$user_id = "";
+
+		if(isset($data['isbnText'])){
+			$isbn = $data['isbnText'];
+		}
+		if(isset($data['titreText'])){
+			$title = $data['titreText'];
+		}
+		if(isset($data['studentName'])){
+			$user_id = DB::table('users')->select('id')->where('name', $data['studentName'])->get();
+		}
+
+		$data = DB::table('livres')->where('codeISBN', $isbn)
+			                       ->orWhere('codeUPC', $isbn)
+								   ->orWhere('codeEAN', $isbn)
+								   ->orWhere('titre', $title)
+								   ->orWhere('idUSER', $user_id[0]->id)
+								   ->get();
+
+		if(!emptyArray($data)) {
+			return View::make('receptionLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data]);
+		}
+		else {
+			print_r($data);
+			return View::make('receptionLivres')->with(['user' => Auth::user()->name, 'dataDB' => ""]);
+		}
+	}
+
 	/**
 	 * Handles inserts into DB for all code types
 	 *
@@ -151,7 +185,7 @@ class Controller extends BaseController
 		return Redirect::route('coopManagement');
 	}
 
-	public function receiveBooks(){
+	public function receiveBooks(Request $request){
 
 	}
 }

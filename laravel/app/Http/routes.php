@@ -12,6 +12,7 @@
 */
 
 // Book search & DB routes...
+Route::post('rechercheLivre', ['as' => 'rechercheLivre', 'uses' => 'Controller@rechercherLivre']);
 Route::post('upcSearch', ['as' => 'upcSearch', 'uses' => 'Controller@getUpcBooks']);
 Route::post('isbnSearch', ['as' => 'isbnSearch', 'uses' => 'Controller@getIsbnBooks']);
 Route::post('eanSearch', ['as' => 'eanSearch', 'uses' => 'Controller@getEanBooks']);
