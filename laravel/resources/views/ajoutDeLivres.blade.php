@@ -27,6 +27,7 @@
 
         </div>
     </div>
+
     <div id="returnBook" class="container-fluid well" style="box-shadow: none !important;">
         <?php
             if(isset($jsonUPC)){ ?>

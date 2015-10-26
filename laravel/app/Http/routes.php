@@ -12,16 +12,16 @@
 */
 
 // Book search & DB routes...
-Route::post('rechercheLivre', ['as' => 'rechercheLivre', 'uses' => 'Controller@rechercherLivre']);
-Route::post('upcSearch', ['as' => 'upcSearch', 'uses' => 'Controller@getUpcBooks']);
-Route::post('isbnSearch', ['as' => 'isbnSearch', 'uses' => 'Controller@getIsbnBooks']);
-Route::post('eanSearch', ['as' => 'eanSearch', 'uses' => 'Controller@getEanBooks']);
-Route::post('submitCoop', ['as' => 'submitCoop', 'uses' => 'Controller@submitCoop']);
-Route::post('joinCoop', ['as' => 'joinCoop', 'uses' => 'Controller@joinCoop']);
-Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Controller@insertBookIntoDB']);
-Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'Controller@checkLogin']);
-Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'Controller@databaseGetBooks']);
-Route::post('receiveBooks', ['as' => 'receiveBooks', 'uses' => 'Controller@receiveBooks']);
+Route::post('rechercheLivre', ['as' => 'rechercheLivre', 'uses' => 'DatabaseController@rechercherLivre']);
+Route::post('upcSearch', ['as' => 'upcSearch', 'uses' => 'APIController@getUpcBooks']);
+Route::post('isbnSearch', ['as' => 'isbnSearch', 'uses' => 'APIController@getIsbnBooks']);
+Route::post('eanSearch', ['as' => 'eanSearch', 'uses' => 'APIController@getEanBooks']);
+Route::post('submitCoop', ['as' => 'submitCoop', 'uses' => 'DatabaseController@submitCoop']);
+Route::post('joinCoop', ['as' => 'joinCoop', 'uses' => 'DatabaseController@joinCoop']);
+Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'DatabaseController@insertBookIntoDB']);
+Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'DatabaseController@checkLogin']);
+Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'DatabaseController@databaseGetBooks']);
+Route::post('receiveBooks', ['as' => 'receiveBooks', 'uses' => 'DatabaseController@receiveBooks']);
 
 // Accessor routes...
 Route::get('home', ['as' => 'home', function(){
