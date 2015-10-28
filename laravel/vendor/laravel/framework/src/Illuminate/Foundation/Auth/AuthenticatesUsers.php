@@ -9,6 +9,15 @@ use Illuminate\Support\Facades\Lang;
 trait AuthenticatesUsers
 {
     use RedirectsUsers;
+    private $username = "";
+
+    public function checkInfo(Request $request){
+        if(!empty($request['phone'])){
+            $this->username = 'phone';
+        } else {
+            $this->username = 'email';
+        }
+    }
 
     /**
      * Show the application login form.
@@ -32,6 +41,8 @@ trait AuthenticatesUsers
      */
     public function postLogin(Request $request)
     {
+        $this->checkInfo($request);
+        
         $this->validate($request, [
             $this->loginUsername() => 'required', 'password' => 'required',
         ]);
