@@ -24,6 +24,8 @@ Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'DatabaseController@dat
 Route::post('receiveBooks', ['as' => 'receiveBooks', 'uses' => 'DatabaseController@receiveBooks']);
 Route::post('findBooksForReservation', ['as' => 'findBooksForReservation', 'uses' => 'DatabaseController@findBooksForReservation']);
 Route::post('reserveBook', ['as' => 'reserveBook', 'uses' => 'DatabaseController@reserveBook']);
+Route::post('reservationEmail', ['as' => 'reservationEmail', 'uses' => 'DatabaseController@reservationEmail']);
+Route::get('bookDelivery', ['as' => 'bookDelivery', 'uses' => 'DatabaseController@bookDelivery']);
 
 // Accessor routes...
 Route::get('home', ['as' => 'home', function(){

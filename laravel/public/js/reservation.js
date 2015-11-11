@@ -60,4 +60,9 @@ $(document).ready(function() {
         alert("Réservation Annulée");
         window.location.href("bookReservation");
     }
+
+    window.setTimeout(function(){
+        $(".alert-success").fadeTo(2000, 500).slideUp(500, function(){
+            $("#success-alert").alert('close');
+        })}, 1000);
 });

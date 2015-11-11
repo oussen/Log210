@@ -76,13 +76,14 @@
                             <option value="old" <?php if(isset($livre->condition)){if($livre->condition == "old"){echo 'selected="true"';}}?>>Très Usé</option>
                         </select>
                     </td>
-                    <td id="selected" align="center"><input type="checkbox" id="chkSelect<?php echo $livre->id; ?>"></td>
+                    <td id="selected" align="center"><input type="checkbox" id="chkSelect<?php echo $livre->id; ?>" value="1"></td>
                 </tr>
                 <a href='mailto:<?php if(isset($livre->email)){echo $livre->email;} ?>?subject=Reception%20de%20livres&body=Votre%20livre%20a%20ete%20recu.' id='SendMail<?php if(isset($livre->id)){echo $livre->id;} ?>'></a>
                 <?php } ?>
                 </tbody>
             </table>
         </div>
+
         <button class="form-control col-md-offset-5" id="saveBtnRec" name="eanBtn">Enregistrer</button>
         <?php
         }

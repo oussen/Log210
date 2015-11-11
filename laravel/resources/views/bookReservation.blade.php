@@ -31,9 +31,14 @@
         </div>
     </div>
 
+    @if(isset($confirmationEmailDone))
+        <div class="alert alert-success" role="alert" style="text-align: center">Vous recevrez un email quand votre livre sera disponible.</div>
+    @endif
+
     <div id="returnBook" class="container-fluid well" style="box-shadow: none !important; margin-top: 2%">
         <?php
-        if(!empty($dataDB)) {?>
+        if(isset($emptyData)){
+            if($emptyData == 'false'){ ?>
         <div class="panel panel-default">
             <table class="table table-striped table-bordered">
                 <thead>
@@ -98,7 +103,52 @@
         </div>
         <button class="form-control col-md-offset-5" id="saveReservationBtn" name="saveReservationBtn">Enregistrer</button>
     <?php
-    }?>
+    } else { ?>
+        <div class="alert alert-danger alert-dismissible" role="alert" style="text-align: center">Oops! Nous avons rien trouvé... Veuillez entrer le <b>numéro ISBN</b> du livre que vous désirez acheter et vous serez notifié par courriel quand il sera disponible.</div>
+        <form class="col-md-offset-4 col-md-4" style="padding-top: 3%; padding-bottom: 1%" method="post" action="{{ route('isbnSearch') }}" accept-charset="UTF-8" id="submitForm">
+            <div class="input-group">
+                <input class="form-control" type="text" id="isbnText" name="isbnText" placeholder="ISBN...">
+                <span class="input-group-btn">
+                    <button class="form-control" id="isbnSearch" style="display:inline-block !important; border-top-right-radius: 4px !important; border-bottom-right-radius: 4px !important">ISBN</button>
+                </span>
+            </div>
+            <input name="pageName" type="hidden" value="bookReservation"/>
+            <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+        </form>
+            @if(isset($jsonISBN))
+                <form method="post" action="{{ route('reservationEmail') }}" accept-charset="UTF-8" id="confirmationEmailForm">
+                    <div class="panel panel-default">
+                        <table class="table table-striped table-bordered">
+                            <thead>
+                            <tr><th>ISBN</th><th>Titre</th><th>Auteur</th><th>Pages</th><th>Prix</th><th>Condition</th></tr>
+                            </thead>
+                            <tbody>
+                            <tr><td id="isbn"><?php if (isset($jsonISBN['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier'])) { echo $jsonISBN['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']; } ?></td>
+                                <td id="bookTitle"><?php if (isset($jsonISBN['items'][0]['volumeInfo']['title'])) { echo $jsonISBN['items'][0]['volumeInfo']['title']; } ?></td>
+                                <td id="author"><?php if(isset($jsonISBN['items'][0]['volumeInfo']['authors'][0])){ echo $jsonISBN['items'][0]['volumeInfo']['authors'][0]; } ?></td>
+                                <td id="pageCount"><?php if(isset($jsonISBN['items'][0]['volumeInfo']['pageCount'])){ echo $jsonISBN['items'][0]['volumeInfo']['pageCount']; } ?></td>
+                                <td id="price"><?php if(isset($jsonISBN['items'][0]['volumeInfo']['retailPrice']['amount'])){ echo $jsonISBN['items'][0]['volumeInfo']['retailPrice']['amount']; } ?></td>
+                                <td id="bookState" class="select">
+                                    <select>
+                                        <option value="new">Comme Neuf</option>
+                                        <option value="used">Usé</option>
+                                        <option value="old">Très Usé</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-warning" role="alert" style="text-align: center">Si c'est bien le livre que vous voulez, confirmer votre choix.</div>
+                    <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+                    <input name="userID" type="hidden" value="{{Auth::user()->id}}"/>
+                    <input name="isbnNumber" type="hidden" value="<?php if (isset($jsonISBN['items'][0]['volumeInfo']['industryIdentifiers'][0]['identifier'])) { echo $jsonISBN['items'][0]['volumeInfo']['industryIdentifiers'][1]['identifier']; } ?>"/>
+
+                    <button class="form-control col-md-offset-5" id="confirmationEmailBtn">Confirmer</button>
+                </form>
+            @endif
+    <?php }}?>
 
     </div>
 @endsection

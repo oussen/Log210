@@ -22,6 +22,7 @@
                         <button class="form-control" id="btnSearch" style="display:inline-block !important">Search <span class="glyphicon glyphicon-search"></span></button>
                     </span>
                 </div>
+                <input name="pageName" type="hidden" value="ajoutDeLivres"/>
                 <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                 </form>
             <input type="hidden" id="userCoopID" value="{{ Auth::user()->idCOOP }}"/>

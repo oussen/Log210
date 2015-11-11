@@ -36,6 +36,7 @@ class APIController extends BaseController
     public function getIsbnBooks(Request $request){
 
         $isbn = $request->get('isbnText');
+        $pageName = $request->get('pageName');
 
         $json = $this->getContentDataAttribute(file_get_contents("https://www.googleapis.com/books/v1/volumes?q=+isbn:".
             $isbn.
@@ -43,7 +44,10 @@ class APIController extends BaseController
             "ds=items/volumeInfo(title,authors,pageCount,indus".
             "tryIdentifiers),items/saleInfo/retailPrice/amount"));
 
-        return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'jsonISBN' => $json]);
+        if($pageName == 'ajoutDeLivres')
+            return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'jsonISBN' => $json]);
+        elseif($pageName == 'bookReservation')
+            return View::make('bookReservation')->with(['user' => Auth::user()->name, 'jsonISBN' => $json, 'emptyData' => 'true']);
     }
 
     /**

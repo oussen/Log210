@@ -123,9 +123,9 @@ class DatabaseController extends BaseController
             ->get();
 
         if (!empty($dataDB)) {
-            return View::make('bookReservation')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB]);
+            return View::make('bookReservation')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB, 'emptyData' => 'false']);
         } else {
-            return View::make('bookReservation')->with(['user' => Auth::user()->name, 'dataDB' => ""]);
+            return View::make('bookReservation')->with(['user' => Auth::user()->name, 'dataDB' => "", 'emptyData' => 'true']);
         }
     }
 
@@ -195,6 +195,27 @@ class DatabaseController extends BaseController
         $data = $request->get("id");
 
         DB::table('livres')->where('id', $data)->update(['recu' => "1"]);
+
+        //verifier si un etudiant avait l'intention d'etre notifier pour ce livre
+        /*$bookInfo = DB::table('livres')->select('codeISBN', 'codeUPC', 'codeEAN')->where('id', $data)->get();
+
+        if(!is_null($bookInfo[0]['codeISBN']))
+            $codeISBN = $bookInfo[0]['codeISBN'];
+        elseif(!is_null($bookInfo[0]['codeUPC']))
+            $codeISBN = $bookInfo[0]['codeUPC'];
+        elseif(!is_null($bookInfo[0]['codeEAN']))
+            $codeISBN = $bookInfo[0]['codeEAN'];
+
+        $userID = DB::table('notifications')->where('codeISBN', $codeISBN)
+                                            ->value('idUSER');
+        if (!is_null($userID)){
+            $userCoopID = DB::table('users')->where('id', $userID)->value('idCOOP');
+            if($userCoopID == Auth::user()->idCOOP){
+                //mail("projet.log210.01@gmail.com", "Votre livre est arrivé!", "Vous pouvez venir chercher votre livre.");
+                print_r("Worked!");
+                die();
+            }
+        }*/
     }
 
     public function reserveBook(Request $request){
@@ -207,4 +228,27 @@ class DatabaseController extends BaseController
             DB::table('livres')->where('id', $data['bookID'])->update(['is_reserved' => true]);
         }
     }
+
+    public function reservationEmail(Request $request){
+        $data = $request->all();
+
+        DB::table('notifications')->insert(['idUSER' => $data['userID'], 'codeISBN' => $data['isbnNumber']]);
+        Return View::make('bookReservation')->with(['user' => Auth::user()->name, 'confirmationEmailDone' => 'true']);
+    }
+
+    public function bookDelivery(){
+        $data = DB::table('reservations')->select('idUSER', 'idBOOK')->where('idCOOP', Auth::user()->idCOOP)->get();
+        $count = 0;
+        foreach($data as $book){
+            foreach($book as $key=>$value){
+                if($key == 'idBOOK'){
+                    $dataDB[$count] = DB::table('livres')->where('id', $value)->get();
+                    $count++;
+                }
+            }
+        }
+
+        return View::make('bookDelivery')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB]);
+    }
+
 }

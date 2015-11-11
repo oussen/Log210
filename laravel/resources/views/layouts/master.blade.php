@@ -53,6 +53,9 @@
                             @endif
                             @if(Auth::user()->idCOOP != 0)
                                 <li><a href="{!! URL::route('bookReservation') !!}">Réservation d'un livre</a></li>
+                                @if(Auth::user()->isManager == 1)
+                                    <li><a href="{!! URL::route('bookDelivery') !!}">Demande de livraison</a></li>
+                                @endif
                             @endif
                         @endif
                     </ul>
