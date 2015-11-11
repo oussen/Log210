@@ -69,7 +69,7 @@ class DatabaseController extends BaseController
          *        OR WHERE livres.idUSER = $id
          *      );
          */
-        $data = DB::table('livres')
+        $dataDB = DB::table('livres')
             ->join('users', 'livres.idUSER', '=', 'users.id')
             ->select('livres.*', 'users.email')
             ->where('livres.recu', '<>', 1)
@@ -82,11 +82,50 @@ class DatabaseController extends BaseController
             })
             ->get();
 
-        if(!empty($data)) {
-            return View::make('receptionLivres')->with(['user' => Auth::user()->name, 'dataDB' => $data]);
-        }
-        else {
+
+        if (!empty($dataDB)) {
+            return View::make('receptionLivres')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB]);
+        } else {
             return View::make('receptionLivres')->with(['user' => Auth::user()->name, 'dataDB' => ""]);
+        }
+    }
+
+    public function findBooksForReservation(Request $request)
+    {
+        $data = $request->all();
+        $isbn = "";
+        $title = "~";
+        $author = "~";
+        $idCOOP = $data['userCoopID'];
+
+        if(!empty($data['isbnText'])){
+            $isbn = $data['isbnText'];
+        }
+        if(!empty($data['titreText'])){
+            $title = $data['titreText'];
+        }
+        if(!empty($data['authorName'])){
+            $author = $data['authorName'];
+        }
+
+        $dataDB = DB::table('livres')
+            ->join('users', 'livres.idUSER', '=', 'users.id')
+            ->select('livres.*', 'users.email')
+            ->where('livres.recu', 1)
+            ->where('livres.is_reserved', 0)
+            ->where(function($query) use ($isbn, $title, $author){
+                $query->where('livres.codeISBN', $isbn)
+                    ->orWhere('livres.codeUPC', $isbn)
+                    ->orWhere('livres.codeEAN', $isbn)
+                    ->orWhere('livres.titre', 'like', '%'.$title.'%')
+                    ->orWhere('livres.auteur', 'like', '%'.$author.'%');
+            })
+            ->get();
+
+        if (!empty($dataDB)) {
+            return View::make('bookReservation')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB]);
+        } else {
+            return View::make('bookReservation')->with(['user' => Auth::user()->name, 'dataDB' => ""]);
         }
     }
 
@@ -102,15 +141,15 @@ class DatabaseController extends BaseController
             if($data['whatIs'] == "isbn"){
                 DB::table('livres')->insert(['codeISBN' => $data['isbn'], 'titre' => $data['title'],
                     'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0]);
+                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID']]);
             } elseif($data['whatIs'] == "upc"){
                 DB::table('livres')->insert(['codeUPC' => $data['isbn'], 'titre' => $data['title'],
                     'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0]);
+                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID']]);
             }elseif($data['whatIs'] == "ean"){
                 DB::table('livres')->insert(['codeEAN' => $data['isbn'], 'titre' => $data['title'],
                     'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0]);
+                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID']]);
             }
 
         }
@@ -130,7 +169,7 @@ class DatabaseController extends BaseController
         $currentCoop = DB::table('coop')->select('id')->where('name', $data['coopName'])->get();
         DB::table('users')->where('id', Auth::user()->id)->update(['idCOOP' => $currentCoop[0]->id]);
 
-        return Redirect::route('coopManagement');
+        return Redirect::route('home');
     }
 
     /**
@@ -143,7 +182,7 @@ class DatabaseController extends BaseController
         $data = $request->all();
 
         DB::table('users')->where('id', Auth::user()->id)->update(['idCOOP' => $data['coopSelected']]);
-        return Redirect::route('coopManagement');
+        return Redirect::route('home');
     }
 
     /**
@@ -156,6 +195,16 @@ class DatabaseController extends BaseController
         $data = $request->get("id");
 
         DB::table('livres')->where('id', $data)->update(['recu' => "1"]);
-        return Redirect::route('receptionLivres');
+    }
+
+    public function reserveBook(Request $request){
+        if($request->ajax()) {
+            $data = $request->all();
+
+            $timestamp = date('Y-m-d H:i:s', strtotime($data['reservedUntil']));
+
+            DB::table('reservations')->insert(['idUSER' => $data['userID'], 'idBOOK' => $data['bookID'], 'date_reserved_until' => $timestamp]);
+            DB::table('livres')->where('id', $data['bookID'])->update(['is_reserved' => true]);
+        }
     }
 }

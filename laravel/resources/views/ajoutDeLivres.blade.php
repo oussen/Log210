@@ -24,7 +24,7 @@
                 </div>
                 <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                 </form>
-
+            <input type="hidden" id="userCoopID" value="{{ Auth::user()->idCOOP }}"/>
         </div>
     </div>
 
@@ -53,6 +53,7 @@
                         </tbody>
                     </table>
                 </div>
+
                 <button class="form-control col-md-offset-5" id="saveBtn" name="upcBtn">Enregistrer</button>
             <?php
             } elseif (isset($jsonISBN)){ ?>
@@ -78,6 +79,7 @@
                     </tbody>
                 </table>
             </div>
+
             <button class="form-control col-md-offset-5" id="saveBtn" name="isbnBtn">Enregistrer</button>
             <?php
             } elseif (isset($jsonEAN)){ ?>
@@ -103,6 +105,7 @@
                     </tbody>
                 </table>
             </div>
+
             <button class="form-control col-md-offset-5" id="saveBtn" name="eanBtn">Enregistrer</button>
             <?php
             } elseif (isset($dataDB)){ ?>
@@ -154,6 +157,7 @@
                     </tbody>
                 </table>
             </div>
+
             <button class="form-control col-md-offset-5" id="saveBtn" name="eanBtn">Enregistrer</button>
             <?php
             }

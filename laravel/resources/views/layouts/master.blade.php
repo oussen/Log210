@@ -33,18 +33,28 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li id="menuBooks" class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Livres <span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li id="menuBooksAdd"><a href="{!! URL::route('ajoutDeLivres') !!}">Ajouter un livre</a></li>
-                                @if(Auth::check())
-                                    @if(Auth::user()->isManager == 1)
-                                        <li><a href="{!! URL::route('receptionLivres') !!}">Reception de livre</a></li>
-                                    @endif
-                                @endif
-                            </ul>
-                        </li>
-                        <li><a href="{!! URL::route('coopManagement') !!}">Coop</a></li>
+                        @if(Auth::check())
+                            @if(Auth::user()->idCOOP != 0)
+                                <li id="menuBooks" class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Livres <span class="caret"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li id="menuBooksAdd"><a href="{!! URL::route('ajoutDeLivres') !!}">Ajouter un livre</a></li>
+                                        @if(Auth::user()->isManager == 1)
+                                            <li><a href="{!! URL::route('receptionLivres') !!}">Reception de livre</a></li>
+                                        @endif
+                                    </ul>
+                                </li>
+                            @endif
+                        @endif
+
+                        @if(Auth::check())
+                            @if(Auth::user()->idCOOP == 0)
+                                <li><a href="{!! URL::route('coopManagement') !!}">Coop</a></li>
+                            @endif
+                            @if(Auth::user()->idCOOP != 0)
+                                <li><a href="{!! URL::route('bookReservation') !!}">Réservation d'un livre</a></li>
+                            @endif
+                        @endif
                     </ul>
                     @if(Auth::check())
                         <p class="navbar-text navbar-right">Bienvenue {{$user}}  (<a href="{{ URL::route('auth/logout') }}">Log out</a>)</p>

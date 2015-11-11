@@ -22,6 +22,8 @@ Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Databa
 Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'DatabaseController@checkLogin']);
 Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'DatabaseController@databaseGetBooks']);
 Route::post('receiveBooks', ['as' => 'receiveBooks', 'uses' => 'DatabaseController@receiveBooks']);
+Route::post('findBooksForReservation', ['as' => 'findBooksForReservation', 'uses' => 'DatabaseController@findBooksForReservation']);
+Route::post('reserveBook', ['as' => 'reserveBook', 'uses' => 'DatabaseController@reserveBook']);
 
 // Accessor routes...
 Route::get('home', ['as' => 'home', function(){
@@ -36,6 +38,13 @@ Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', function(){
 		return Redirect::route('auth/login');
 	} else {
 		return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name]);
+	}
+}]);
+Route::get('bookReservation', ['as' => 'bookReservation', function(){
+	if (Auth::guest()){
+		return Redirect::route('auth/login');
+	} else {
+		return view('bookReservation', ['user' => Auth::user()->name]);
 	}
 }]);
 Route::get('coopManagement', ['as' => 'coopManagement', 'uses' => 'Controller@displayCoop']);

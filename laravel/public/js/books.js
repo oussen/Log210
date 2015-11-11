@@ -3,7 +3,6 @@
  */
 $(document).ready(function() {
     $("button[id$='Search']").click(function(e){
-		
 		form = document.getElementById('submitForm');
         form.action = e.target.id;
     });
@@ -20,7 +19,7 @@ $(document).ready(function() {
             whatIs = "ean";
         }
 
-        console.log($('input[name="_token"]').val());
+        console.log($("#userCoopID").val());
         $.ajax({
             url: 'databaseBookEntry',
             type: 'POST',
@@ -37,7 +36,8 @@ $(document).ready(function() {
                     pageCount : $("#pageCount").text(),
                     price : $("#price").text(),
                     bookState : $("select option:selected").val(),
-                    whatIs : whatIs },
+                    whatIs : whatIs,
+                    userCoopID : $("#userCoopID").val()},
             success: function(data){
                 alert("Success!");
                 window.location.href = "ajoutDeLivres";

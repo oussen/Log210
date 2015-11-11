@@ -24,8 +24,8 @@
                    <div id="authDiv">
                        <input class="form-control" type="submit" id="btnSearch" value="Search">
                    </div>
-                </div>
-                <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+               </div>
+               <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
             </form>
         </div>
     </div>

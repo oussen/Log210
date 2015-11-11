@@ -22,6 +22,7 @@ $(document).ready(function() {
                     },
                     data: {id: id},
                     success: function (data) {
+                        alert("Votre livre a été reçu avec succès!");
                         $('#SendMail' + id)[0].click();
                         window.location.href = "receptionLivres";
                     }, error: function () {
