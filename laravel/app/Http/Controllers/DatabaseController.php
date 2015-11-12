@@ -73,6 +73,7 @@ class DatabaseController extends BaseController
             ->join('users', 'livres.idUSER', '=', 'users.id')
             ->select('livres.*', 'users.email')
             ->where('livres.recu', '<>', 1)
+            ->where('livres.is_sold', '<>', 1)
             ->where(function($query) use ($isbn, $title, $id){
                 $query->where('livres.codeISBN', $isbn)
                     ->orWhere('livres.codeUPC', $isbn)
@@ -112,6 +113,7 @@ class DatabaseController extends BaseController
             ->select('livres.*', 'users.email')
             ->where('livres.recu', 1)
             ->where('livres.is_reserved', 0)
+            ->where('livres.is_sold', '<>', 1)
             ->where(function($query) use ($isbn, $title, $author){
                 $query->where('livres.codeISBN', $isbn)
                     ->orWhere('livres.codeUPC', $isbn)
@@ -135,6 +137,7 @@ class DatabaseController extends BaseController
             ->select('livres.*')
             ->where('expedition.isDone', 0)
             ->where('expedition.isExpedited', 0)
+            ->where('livres.is_sold', '<>', 1)
             ->where('livres.recu', 0)
             ->where('livres.idCOOP', Auth::user()->idCOOP)
             ->get();
@@ -153,6 +156,7 @@ class DatabaseController extends BaseController
             ->select('livres.*')
             ->where('expedition.isDone', 0)
             ->where('expedition.isExpedited', 1)
+            ->where('livres.is_sold', '<>', 1)
             ->where('livres.recu', 0)
             ->where('expedition.idCoopTo', Auth::user()->idCOOP)
             ->get();
@@ -193,15 +197,15 @@ class DatabaseController extends BaseController
             if($data['whatIs'] == "isbn"){
                 DB::table('livres')->insert(['codeISBN' => $data['isbn'], 'titre' => $data['title'],
                     'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID']]);
+                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID'], 'is_sold' => 0]);
             } elseif($data['whatIs'] == "upc"){
                 DB::table('livres')->insert(['codeUPC' => $data['isbn'], 'titre' => $data['title'],
                     'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID']]);
+                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID'], 'is_sold' => 0]);
             }elseif($data['whatIs'] == "ean"){
                 DB::table('livres')->insert(['codeEAN' => $data['isbn'], 'titre' => $data['title'],
                     'auteur' => $data['author'], 'nombrePages' => $data['pageCount'],
-                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID']]);
+                    'prix' => $data['price'], 'condition' => $data['bookState'], 'idUSER' => Auth::user()->id, 'recu' => 0, 'idCOOP' => $data['userCoopID'], 'is_sold' => 0]);
             }
 
         }
@@ -282,7 +286,7 @@ class DatabaseController extends BaseController
                 DB::table('livres')->where('id', $data['bookID'])->update(['recu' => '0']);
             }
 
-            DB::table('reservations')->insert(['idUSER' => $data['userID'], 'idBOOK' => $data['bookID'], 'date_reserved_until' => $timestamp]);
+            DB::table('reservations')->insert(['idUSER' => $data['userID'], 'idBOOK' => $data['bookID'], 'date_reserved_until' => $timestamp, 'idCOOP' => Auth::user()->idCOOP]);
             DB::table('livres')->where('id', $data['bookID'])->update(['is_reserved' => true]);
         }
     }
@@ -297,16 +301,49 @@ class DatabaseController extends BaseController
     public function bookDelivery(){
         $data = DB::table('reservations')->select('idUSER', 'idBOOK')->where('idCOOP', Auth::user()->idCOOP)->get();
         $count = 0;
-        foreach($data as $book){
-            foreach($book as $key=>$value){
-                if($key == 'idBOOK'){
-                    $dataDB[$count] = DB::table('livres')->where('id', $value)->get();
-                    $count++;
+        $askingUserID = "";
+
+        if(!empty($data)) {
+            foreach ($data as $book) {
+                foreach ($book as $key => $value) {
+                    if ($key == 'idUSER') {
+                        $askingUserID = $value;
+                    }
+                    if ($key == 'idBOOK') {
+                        $dataDB[$count] = DB::table('livres')->where('id', $value)->get();
+                        $count++;
+                    }
                 }
             }
-        }
 
-        return View::make('bookDelivery')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB]);
+            return View::make('bookDelivery')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB, 'askingUserID' => $askingUserID]);
+        } else {
+            return View::make('bookDelivery')->with(['user' => Auth::user()->name, 'dataDB' => "", 'askingUserID' => $askingUserID]);
+        }
+    }
+
+    public function acceptDelivery(Request $request){
+        $data = $request->all();
+
+        DB::table('livres')->where('id', $data['bookID'])->update(['is_sold' => 1]);
+
+        DB::table('reservations')->where('idUSER', $data['userID'])
+                                ->where('idBOOK', $data['bookID'])
+                                ->delete();
+
+        return View::make('bookDelivery')->with(['user' => Auth::user()->name, 'delivery' => 'success']);
+    }
+
+    public function declineDelivery(Request $request){
+        $data = $request->all();
+
+        DB::table('livres')->where('id', $data['bookID'])->update(['is_reserved' => 0]);
+
+        DB::table('reservations')->where('idUSER', $data['userID'])
+            ->where('idBOOK', $data['bookID'])
+            ->delete();
+
+        return View::make('bookDelivery')->with(['user' => Auth::user()->name, 'delivery' => 'failure']);
     }
 
 }

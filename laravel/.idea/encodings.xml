@@ -8,6 +8,7 @@
     <file url="file://$PROJECT_DIR$/resources/views/ajoutDeLivres.blade.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/views/auth/login.blade.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/views/auth/register.blade.php" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/resources/views/bookDelivery.blade.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/views/bookReservation.blade.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/views/bookTransfer.blade.php" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/resources/views/bookTransferReceive.blade.php" charset="UTF-8" />

@@ -28,6 +28,8 @@ Route::post('findBooksForReservation', ['as' => 'findBooksForReservation', 'uses
 Route::post('reserveBook', ['as' => 'reserveBook', 'uses' => 'DatabaseController@reserveBook']);
 Route::post('reservationEmail', ['as' => 'reservationEmail', 'uses' => 'DatabaseController@reservationEmail']);
 Route::get('bookDelivery', ['as' => 'bookDelivery', 'uses' => 'DatabaseController@bookDelivery']);
+Route::post('acceptDelivery', ['as' => 'acceptDelivery', 'uses' => 'DatabaseController@acceptDelivery']);
+Route::post('declineDelivery', ['as' => 'declineDelivery', 'uses' => 'DatabaseController@declineDelivery']);
 
 // Accessor routes...
 Route::get('home', ['as' => 'home', function(){
