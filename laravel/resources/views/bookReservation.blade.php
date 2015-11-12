@@ -100,6 +100,7 @@
             </table>
             <input type="hidden" id="reservedUntil" value="<?php echo strtotime('+2 day', time()) ?>"/>
             <input type="hidden" id="currentUserID" value="{{Auth::user()->id}}"/>
+            <input type="hidden" id="currentBookCoopID" value="<?php echo $livre->idCOOP ?>"/>
         </div>
         <button class="form-control col-md-offset-5" id="saveReservationBtn" name="saveReservationBtn">Enregistrer</button>
     <?php

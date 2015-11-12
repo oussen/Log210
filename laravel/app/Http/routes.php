@@ -13,6 +13,7 @@
 
 // Book search & DB routes...
 Route::post('rechercheLivre', ['as' => 'rechercheLivre', 'uses' => 'DatabaseController@rechercherLivre']);
+Route::post('bookTransferReceive', ['as' => 'bookTransferReceive', 'uses' => 'DatabaseController@bookTransferReceive']);
 Route::post('upcSearch', ['as' => 'upcSearch', 'uses' => 'APIController@getUpcBooks']);
 Route::post('isbnSearch', ['as' => 'isbnSearch', 'uses' => 'APIController@getIsbnBooks']);
 Route::post('eanSearch', ['as' => 'eanSearch', 'uses' => 'APIController@getEanBooks']);
@@ -22,6 +23,7 @@ Route::post('databaseBookEntry', ['as' => 'databaseBookEntry', 'uses' => 'Databa
 Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', 'uses' => 'DatabaseController@checkLogin']);
 Route::post('btnSearch', ['as' => 'btnSearch', 'uses' => 'DatabaseController@databaseGetBooks']);
 Route::post('receiveBooks', ['as' => 'receiveBooks', 'uses' => 'DatabaseController@receiveBooks']);
+Route::post('sendBooks', ['as' => 'sendBooks', 'uses' => 'DatabaseController@sendBooks']);
 Route::post('findBooksForReservation', ['as' => 'findBooksForReservation', 'uses' => 'DatabaseController@findBooksForReservation']);
 Route::post('reserveBook', ['as' => 'reserveBook', 'uses' => 'DatabaseController@reserveBook']);
 Route::post('reservationEmail', ['as' => 'reservationEmail', 'uses' => 'DatabaseController@reservationEmail']);
@@ -52,6 +54,12 @@ Route::get('bookReservation', ['as' => 'bookReservation', function(){
 Route::get('coopManagement', ['as' => 'coopManagement', 'uses' => 'Controller@displayCoop']);
 Route::get('receptionLivres', ['as' => 'receptionLivres', function(){
 	return view('receptionLivres', ['user' => Auth::user()->name]);
+}]);
+Route::get('bookTransfer', ['as' => 'bookTransfer', 'uses' => 'DatabaseController@findBooksForTransferSend', function(){
+	return view('bookTransfer', ['user' => Auth::user()->name]);
+}]);
+Route::get('bookTransferReceive', ['as' => 'bookTransferReceive', 'uses' => 'DatabaseController@findBooksForTransferReceive', function(){
+	return view('bookTransferReceive', ['user' => Auth::user()->name]);
 }]);
 
 // Authentication routes...

@@ -9,9 +9,14 @@ $(document).ready(function() {
                 var userID = $("#currentUserID").val();
                 var friendlyTime = timeConverter(reservedUntil);
                 var deliveryPrice = $("#" + bookID + "-deliveryPrice").text().trim();
+                var coopID = $("#currentBookCoopID").val();
+
+                var isTransfer = false;
 
                 if(deliveryPrice == "10$"){
                     var answer = confirm("Cet achat aura un frais supplémentaire de 10$ pour la livraison");
+
+                    isTransfer = true;
 
                     if(answer == false){
                         exitReservation();
@@ -31,13 +36,15 @@ $(document).ready(function() {
                     data: {
                             bookID : bookID,
                             userID : userID,
-                            reservedUntil : friendlyTime
+                            reservedUntil : friendlyTime,
+                            coopID : coopID,
+                            isTransfer : isTransfer
                     },
                     success: function () {
                         alert("Votre livre a été réservé jusqu'au - " + friendlyTime);
                         window.location.href = "bookReservation";
                     }, error: function () {
-                        alert("Error processing request, please reload and try again.");
+                        alert(isTransfer);
                     }
                 });
             }
