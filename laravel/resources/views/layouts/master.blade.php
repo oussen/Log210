@@ -41,6 +41,8 @@
                                         <li id="menuBooksAdd"><a href="{!! URL::route('ajoutDeLivres') !!}">Ajouter un livre</a></li>
                                         @if(Auth::user()->isManager == 1)
                                             <li><a href="{!! URL::route('receptionLivres') !!}">Reception de livre</a></li>
+                                            <li><a href="{!! URL::route('bookTransfer') !!}">Transfert de livre</a></li>
+                                            <li><a href="{!! URL::route('bookTransferReceive') !!}">Reception de transfert</a></li>
                                         @endif
                                     </ul>
                                 </li>

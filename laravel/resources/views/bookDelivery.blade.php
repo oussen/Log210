@@ -31,9 +31,9 @@
                             @if($livre[0]->condition == "new")
                                 Comme Neuf
                             @elseif($livre[0]->condition == "used")
-                                Usé
+                                UsÃ©
                             @else
-                                Très Usé
+                                TrÃ¨s UsÃ©
                             @endif
                         @endif
                     </td>

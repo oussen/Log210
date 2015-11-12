@@ -3,13 +3,14 @@
 @section('title', 'Transfert')
 
 @section('scripts')
-
+    {!! Html::script('js/bookTransfer.js') !!}
 @endsection
 
 @section('content')
 
     <div class="container-fluid">
-        <h1 id="authTitle">TRANSFERT'DE'LIVRES</h1>
+        <h1 id="authTitle">Ã’TRANSFERT'DE'LIVRESÃ“</h1>
+        <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
     </div>
     <div id="returnBook" class="container-fluid well" style="box-shadow: none !important; margin-top: 2%">
         <?php
@@ -54,8 +55,8 @@
                     <td id="bookState" contenteditable="true" class="select">
                         <select>
                             <option value="new" <?php if(isset($livre->condition)){if($livre->condition == "new"){echo 'selected="true"';}}?>>Comme Neuf</option>
-                            <option value="used" <?php if(isset($livre->condition)){if($livre->condition == "used"){echo 'selected="true"';}}?>>Usé</option>
-                            <option value="old" <?php if(isset($livre->condition)){if($livre->condition == "old"){echo 'selected="true"';}}?>>Très Usé</option>
+                            <option value="used" <?php if(isset($livre->condition)){if($livre->condition == "used"){echo 'selected="true"';}}?>>UsÃ©</option>
+                            <option value="old" <?php if(isset($livre->condition)){if($livre->condition == "old"){echo 'selected="true"';}}?>>TrÃ¨s UsÃ©</option>
                         </select>
                     </td>
                     <td id="selected" align="center"><input type="checkbox" id="chkSelect<?php echo $livre->id; ?>" value="1"></td>

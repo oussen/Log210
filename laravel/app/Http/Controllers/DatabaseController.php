@@ -96,7 +96,6 @@ class DatabaseController extends BaseController
         $isbn = "";
         $title = "~";
         $author = "~";
-        $idCOOP = $data['userCoopID'];
 
         if(!empty($data['isbnText'])){
             $isbn = $data['isbnText'];
@@ -127,6 +126,59 @@ class DatabaseController extends BaseController
         } else {
             return View::make('bookReservation')->with(['user' => Auth::user()->name, 'dataDB' => "", 'emptyData' => 'true']);
         }
+    }
+
+    public function findBooksForTransferSend()
+    {
+        $dataDB = DB::table('livres')
+            ->join('expedition', 'livres.id', '=', 'expedition.idBOOK')
+            ->select('livres.*')
+            ->where('expedition.isDone', 0)
+            ->where('expedition.isExpedited', 0)
+            ->where('livres.recu', 0)
+            ->where('livres.idCOOP', Auth::user()->idCOOP)
+            ->get();
+
+        if (!empty($dataDB)) {
+            return View::make('bookTransfer')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB, 'emptyData' => 'false']);
+        } else {
+            return View::make('bookTransfer')->with(['user' => Auth::user()->name, 'dataDB' => "", 'emptyData' => 'true']);
+        }
+    }
+
+    public function findBooksForTransferReceive()
+    {
+        $dataDB = DB::table('livres')
+            ->join('expedition', 'livres.id', '=', 'expedition.idBOOK')
+            ->select('livres.*')
+            ->where('expedition.isDone', 0)
+            ->where('expedition.isExpedited', 1)
+            ->where('livres.recu', 0)
+            ->where('expedition.idCoopTo', Auth::user()->idCOOP)
+            ->get();
+
+        if (!empty($dataDB)) {
+            return View::make('bookTransferReceive')->with(['user' => Auth::user()->name, 'dataDB' => $dataDB, 'emptyData' => 'false']);
+        } else {
+            return View::make('bookTransferReceive')->with(['user' => Auth::user()->name, 'dataDB' => "", 'emptyData' => 'true']);
+        }
+    }
+
+    public function bookTransferReceive(Request $request)
+    {
+        $data = $request->get('id');
+
+        DB::table('livres')->where('id', $data)->update(['recu' => '1' ,'idCOOP' => Auth::user()->idCOOP]);
+        DB::table('expedition')->where('idBOOK', $data)->update(['isExpedited' => '1', 'isDone' => '1']);
+
+        //mail("projet.log210.01@gmail.com", "Votre livre est arrivé!", "Vous avez 48 heures pour venir chercher votre livre.");
+    }
+
+    public function sendBooks(Request $request)
+    {
+        $data = $request->get('id');
+        DB::table('expedition')->where('idBOOK', $data)->update(['isExpedited' => "1"]);
+        DB::table('livres')->where('id', $data)->update(['recu' => 0]);
     }
 
     /**
@@ -223,6 +275,12 @@ class DatabaseController extends BaseController
             $data = $request->all();
 
             $timestamp = date('Y-m-d H:i:s', strtotime($data['reservedUntil']));
+
+            if($data['isTransfer'] == true)
+            {
+                DB::table('expedition')->insert(['idBOOK' => $data['bookID'], 'idCoopFrom' => $data['coopID'], 'idCoopTo' => Auth::user()->idCOOP]);
+                DB::table('livres')->where('id', $data['bookID'])->update(['recu' => '0']);
+            }
 
             DB::table('reservations')->insert(['idUSER' => $data['userID'], 'idBOOK' => $data['bookID'], 'date_reserved_until' => $timestamp]);
             DB::table('livres')->where('id', $data['bookID'])->update(['is_reserved' => true]);
