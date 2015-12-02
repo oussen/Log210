@@ -9,24 +9,6 @@ use View, Auth;
 class APIController extends BaseController
 {
     /**
-     * Sends a json request to a UPC database API
-     * Returns with json string of all info available
-     *
-     * @param Request $request -> in this case UPC number
-     * @return View 'ajoutDeLivres' with Username and json array of api result
-     */
-    public function getUpcBooks(Request $request){
-
-        $isbn = $request->get('isbnText');
-
-        $json = $this->getContentDataAttribute(file_get_contents('http://api.upcdatabase.org/json/9b2028c160f324a5a0ed889f07394e5d/' . $isbn));
-
-        //return $json;
-
-        return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'jsonUPC' => $json]);
-    }
-
-    /**
      * Sends a json request to an ISBN database API
      * Returns with json string of all info available
      *
@@ -48,6 +30,24 @@ class APIController extends BaseController
             return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'jsonISBN' => $json]);
         elseif($pageName == 'bookReservation')
             return View::make('bookReservation')->with(['user' => Auth::user()->name, 'jsonISBN' => $json, 'emptyData' => 'true']);
+    }
+
+    /**
+     * Sends a json request to a UPC database API
+     * Returns with json string of all info available
+     *
+     * @param Request $request -> in this case UPC number
+     * @return View 'ajoutDeLivres' with Username and json array of api result
+     */
+    public function getUpcBooks(Request $request){
+
+        $isbn = $request->get('isbnText');
+
+        $json = $this->getContentDataAttribute(file_get_contents('http://api.upcdatabase.org/json/9b2028c160f324a5a0ed889f07394e5d/' . $isbn));
+
+        //return $json;
+
+        return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name, 'jsonUPC' => $json]);
     }
 
     /**
