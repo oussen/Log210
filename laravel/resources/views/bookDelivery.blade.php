@@ -3,7 +3,7 @@
 @section('title', 'Livraison')
 
 @section('scripts')
-    {!! Html::script('js/bookDelivery.js') !!}
+    {!! Html::script('js/bookDelivery.js', array(), true) !!}
 @endsection
 
 @section('content')

@@ -3,7 +3,7 @@
 @section('title', 'Coop')
 
 @section('scripts')
-    {!! Html::script('js/coop.js') !!}
+    {!! Html::script('js/coop.js', array(), true) !!}
 @endsection
 
 @section('content')

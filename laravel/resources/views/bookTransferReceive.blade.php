@@ -3,7 +3,7 @@
 @section('title', 'Reception')
 
 @section('scripts')
-    {!! Html::script('js/bookTransferReceive.js') !!}
+    {!! Html::script('js/bookTransferReceive.js', array(), true) !!}
 @endsection
 
 @section('content')
