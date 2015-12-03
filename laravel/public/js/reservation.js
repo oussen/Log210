@@ -1,5 +1,13 @@
 $(document).ready(function() {
 
+    $(":checkbox").change(function(){
+        idArray = this.id.split("-");
+        id = idArray[1];
+
+        $("input[name='titleBook']").val($("#bookTitle-"+id).text());
+        $("input[name='priceBook']").val($("#price-"+id).text());
+    });
+
     $("#saveReservationBtn").click(function(){
         $('*[id^="chkSelect"]').each(function(){
             if($(this).is(":checked")) {

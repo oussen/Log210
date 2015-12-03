@@ -140,7 +140,6 @@
                             </tbody>
                         </table>
                     </div>
-
                     <div class="alert alert-warning" role="alert" style="text-align: center">Si c'est bien le livre que vous voulez, confirmer votre choix.</div>
                     <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
                     <input name="userID" type="hidden" value="{{Auth::user()->id}}"/>
@@ -149,8 +148,37 @@
                     <button class="form-control col-md-offset-5" id="confirmationEmailBtn">Confirmer</button>
                 </form>
             @endif
-    <?php }}?>
 
+    <?php }}?>
+            @if (!isset($xmlEBay))
+        <form method="post" action="{{ route('sellEbay') }}" accept-charset="UTF-8" id="formSellEbay">
+            <input type="hidden" name="titleBook" value="Title">
+            <input type="hidden" name="priceBook" value="0">
+            <input type="image" src="../ebay.png" name="submit" alt="Submit">
+            <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+        </form>
+            @else
+                <?php
+                // Display information to user based on AddItem response.
+
+                // Convert the xml response string in an xml object
+                $xmlResponse = simplexml_load_string($xmlEBay);
+
+                // Verify that the xml response object was created
+                if ($xmlResponse) {
+
+                    // Check for call success
+                    if ($xmlResponse->Ack == "Success") {
+                        print_r("Item succesfully added");
+                    } else {
+
+                        print_r("Error in adding item");
+                    }
+
+                }
+
+                ?>
+            @endif
     </div>
 @endsection
 @endsection

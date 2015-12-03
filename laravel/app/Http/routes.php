@@ -30,6 +30,7 @@ Route::post('reservationEmail', ['as' => 'reservationEmail', 'uses' => 'Database
 Route::get('bookDelivery', ['as' => 'bookDelivery', 'uses' => 'DatabaseController@bookDelivery']);
 Route::post('acceptDelivery', ['as' => 'acceptDelivery', 'uses' => 'DatabaseController@acceptDelivery']);
 Route::post('declineDelivery', ['as' => 'declineDelivery', 'uses' => 'DatabaseController@declineDelivery']);
+Route::post('sellEbay', ['as' => 'sellEbay', 'uses' => 'APIController@sellOnEbay']);
 
 // Accessor routes...
 Route::get('home', ['as' => 'home', function(){
