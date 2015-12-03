@@ -60,7 +60,7 @@
                 </thead>
                 <tbody>
                 <?php foreach($dataDB as $livre){ ?>
-                <tr><td id="isbn"><?php if(isset($livre->codeISBN)){
+                <tr><td id="isbn-{{$livre->id}}"><?php if(isset($livre->codeISBN)){
                             echo $livre->codeISBN;
                         }
                         elseif(isset($livre->codeUPC)){
@@ -72,11 +72,11 @@
                         }
                         ?>
                     </td>
-                    <td id="bookTitle"><?php if(isset($livre->titre)){echo $livre->titre; }?></td>
-                    <td id="author"><?php if(isset($livre->auteur)){echo $livre->auteur; }?></td>
-                    <td id="pageCount"><?php if(isset($livre->nombrePages)){echo $livre->nombrePages; }?></td>
-                    <td id="price"><?php if(isset($livre->prix)){echo $livre->prix; }?></td>
-                    <td id="bookState">@if(isset($livre->condition))
+                    <td id="bookTitle-{{$livre->id}}"><?php if(isset($livre->titre)){echo $livre->titre; }?></td>
+                    <td id="author-{{$livre->id}}"><?php if(isset($livre->auteur)){echo $livre->auteur; }?></td>
+                    <td id="pageCount-{{$livre->id}}"><?php if(isset($livre->nombrePages)){echo $livre->nombrePages; }?></td>
+                    <td id="price-{{$livre->id}}"><?php if(isset($livre->prix)){echo $livre->prix; }?></td>
+                    <td id="bookState-{{$livre->id}}">@if(isset($livre->condition))
                                            @if($livre->condition == "new")
                                                Comme Neuf
                                            @elseif($livre->condition == "used")
@@ -87,7 +87,7 @@
                                       @endif
                     </td>
                     <td id="selected" align="center"><input type="checkbox" id="chkSelect-<?php echo $livre->id; ?>"></td>
-                    <td id="{{$livre->id}}-deliveryPrice" style="@if($livre->idCOOP != Auth::user()->idCOOP) color:red !important @endif" >
+                    <td id="deliveryPrice-{{$livre->id}}" style="@if($livre->idCOOP != Auth::user()->idCOOP) color:red !important @endif" >
                         @if($livre->idCOOP != Auth::user()->idCOOP)
                             10$
                         @else
@@ -150,36 +150,17 @@
             @endif
 
     <?php }}?>
+
             @if (!isset($xmlEBay))
-        <form method="post" action="{{ route('sellEbay') }}" accept-charset="UTF-8" id="formSellEbay">
-            <input type="hidden" name="titleBook" value="Title">
-            <input type="hidden" name="priceBook" value="0">
-            <input type="image" src="../ebay.png" name="submit" alt="Submit">
-            <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
-        </form>
+                <form method="post" action="{{ route('sellEbay') }}" accept-charset="UTF-8" id="formSellEbay">
+                    <input type="hidden" name="titleBook" value="Title">
+                    <input type="hidden" name="priceBook" value="0">
+                    <input type="image" src="ebay.png" name="submit" style="width: 100px; height: 40px;" alt="Submit">
+                    <input name="_token" type="hidden" value="{{ csrf_token() }}"/>
+                </form>
             @else
-                <?php
-                // Display information to user based on AddItem response.
-
-                // Convert the xml response string in an xml object
-                $xmlResponse = simplexml_load_string($xmlEBay);
-
-                // Verify that the xml response object was created
-                if ($xmlResponse) {
-
-                    // Check for call success
-                    if ($xmlResponse->Ack == "Success") {
-                        print_r("Item succesfully added");
-                    } else {
-
-                        print_r("Error in adding item");
-                    }
-
-                }
-
-                ?>
+                <div class="alert alert-success" role="alert" style="text-align: center">Votre item a été placé sur eBay avec succés!</div>
             @endif
     </div>
-@endsection
 @endsection
 

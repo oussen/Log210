@@ -175,7 +175,7 @@ class DatabaseController extends BaseController
         DB::table('livres')->where('id', $data)->update(['recu' => '1' ,'idCOOP' => Auth::user()->idCOOP]);
         DB::table('expedition')->where('idBOOK', $data)->update(['isExpedited' => '1', 'isDone' => '1']);
 
-        //mail("projet.log210.01@gmail.com", "Votre livre est arrivé!", "Vous avez 48 heures pour venir chercher votre livre.");
+        //mail("projet.log210.01@gmail.com", "Votre livre est arrivï¿½!", "Vous avez 48 heures pour venir chercher votre livre.");
     }
 
     public function sendBooks(Request $request)
@@ -267,7 +267,7 @@ class DatabaseController extends BaseController
         if (!is_null($userID)){
             $userCoopID = DB::table('users')->where('id', $userID)->value('idCOOP');
             if($userCoopID == Auth::user()->idCOOP){
-                //mail("projet.log210.01@gmail.com", "Votre livre est arrivé!", "Vous pouvez venir chercher votre livre.");
+                //mail("projet.log210.01@gmail.com", "Votre livre est arrivï¿½!", "Vous pouvez venir chercher votre livre.");
                 print_r("Worked!");
                 die();
             }
