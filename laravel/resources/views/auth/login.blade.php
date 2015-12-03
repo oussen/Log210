@@ -4,7 +4,7 @@
 @section('title', 'Login')
 
 @section('scripts')
-    {!! Html::script('js/login.js') !!}
+    {!! Html::script('js/login.js', array(), true) !!}
 @endsection
 
 @section('content')

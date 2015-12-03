@@ -8,11 +8,11 @@
     {!! Html::script('//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js') !!}
     @yield('scripts')
     {!! Html::script('//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js') !!}
-    {!! Html::script('js/books.js') !!}
-    {!! Html::script('js/typeahead.js') !!}
+    {!! Html::script('js/books.js', array(), true) !!}
     @yield('css')
     {!! Html::style('//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css') !!}
-    {!! Html::style('css/master.css') !!}
+    {!! Html::style('css/master.css', array(), true) !!}
+
 </head>
 
 <body>

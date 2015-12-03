@@ -10,7 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
-
+Route::group(['middleware' => 'use.ssl'], function() {
 // Book search & DB routes...
 Route::post('rechercheLivre', ['as' => 'rechercheLivre', 'uses' => 'DatabaseController@rechercherLivre']);
 Route::post('bookTransferReceive', ['as' => 'bookTransferReceive', 'uses' => 'DatabaseController@bookTransferReceive']);
@@ -31,38 +31,39 @@ Route::get('bookDelivery', ['as' => 'bookDelivery', 'uses' => 'DatabaseControlle
 Route::post('acceptDelivery', ['as' => 'acceptDelivery', 'uses' => 'DatabaseController@acceptDelivery']);
 Route::post('declineDelivery', ['as' => 'declineDelivery', 'uses' => 'DatabaseController@declineDelivery']);
 
+
 // Accessor routes...
-Route::get('home', ['as' => 'home', function(){
-	if (Auth::guest()){
-		return Redirect::route('auth/login');
-	} else {
-		return view('welcome', ['user' => Auth::user()->name]);
-	}
-}]);
-Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', function(){
-	if (Auth::guest()){
-		return Redirect::route('auth/login');
-	} else {
-		return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name]);
-	}
-}]);
-Route::get('bookReservation', ['as' => 'bookReservation', function(){
-	if (Auth::guest()){
-		return Redirect::route('auth/login');
-	} else {
-		return view('bookReservation', ['user' => Auth::user()->name]);
-	}
-}]);
-Route::get('coopManagement', ['as' => 'coopManagement', 'uses' => 'Controller@displayCoop']);
-Route::get('receptionLivres', ['as' => 'receptionLivres', function(){
-	return view('receptionLivres', ['user' => Auth::user()->name]);
-}]);
-Route::get('bookTransfer', ['as' => 'bookTransfer', 'uses' => 'DatabaseController@findBooksForTransferSend', function(){
-	return view('bookTransfer', ['user' => Auth::user()->name]);
-}]);
-Route::get('bookTransferReceive', ['as' => 'bookTransferReceive', 'uses' => 'DatabaseController@findBooksForTransferReceive', function(){
-	return view('bookTransferReceive', ['user' => Auth::user()->name]);
-}]);
+	Route::get('home', ['as' => 'home', function () {
+		if (Auth::guest()) {
+			return Redirect::route('auth/login');
+		} else {
+			return view('welcome', ['user' => Auth::user()->name]);
+		}
+	}]);
+	Route::get('ajoutDeLivres', ['as' => 'ajoutDeLivres', function () {
+		if (Auth::guest()) {
+			return Redirect::route('auth/login');
+		} else {
+			return View::make('ajoutDeLivres')->with(['user' => Auth::user()->name]);
+		}
+	}]);
+	Route::get('bookReservation', ['as' => 'bookReservation', function () {
+		if (Auth::guest()) {
+			return Redirect::route('auth/login');
+		} else {
+			return view('bookReservation', ['user' => Auth::user()->name]);
+		}
+	}]);
+	Route::get('coopManagement', ['as' => 'coopManagement', 'uses' => 'Controller@displayCoop']);
+	Route::get('receptionLivres', ['as' => 'receptionLivres', function () {
+		return view('receptionLivres', ['user' => Auth::user()->name]);
+	}]);
+	Route::get('bookTransfer', ['as' => 'bookTransfer', 'uses' => 'DatabaseController@findBooksForTransferSend', function () {
+		return view('bookTransfer', ['user' => Auth::user()->name]);
+	}]);
+	Route::get('bookTransferReceive', ['as' => 'bookTransferReceive', 'uses' => 'DatabaseController@findBooksForTransferReceive', function () {
+		return view('bookTransferReceive', ['user' => Auth::user()->name]);
+	}]);
 
 // Authentication routes...
 Route::get('auth/login', ['as' => 'auth/login', 'uses' => 'Auth\AuthController@getLogin']);
@@ -72,3 +73,4 @@ Route::get('auth/logout', ['as' => 'auth/logout', 'uses' => 'Auth\AuthController
 // Registration routes...
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
+});
